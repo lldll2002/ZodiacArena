@@ -6,8 +6,23 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/01_Scenes/SampleScene.unity
-    guid: 99c9720ab356a0642a771bea13969a05
+    path: Assets/01_Scenes/01Title/Logo.unity
+    guid: 40941098430b2df4a83db3c9bd920e2e
+  - enabled: 1
+    path: Assets/01_Scenes/01Title/Title.unity
+    guid: c0a4b4d56e5864a4f8298903eae46839
+  - enabled: 1
+    path: Assets/01_Scenes/01Title/InputName.unity
+    guid: b39d1944844117a4389cd4915e2e0633
+  - enabled: 1
+    path: Assets/01_Scenes/01Title/Temp.unity
+    guid: 7907080ea08507549aa4b2a4a3159576
+  - enabled: 1
+    path: Assets/01_Scenes/02MultiTest/MainLobby.unity
+    guid: 4806d1c84dc2a254eaff50c6d04f2488
+  - enabled: 1
+    path: Assets/01_Scenes/02MultiTest/Game.unity
+    guid: cfbf34c700951d543be4ea6500fab265
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 052faaac586de48259a63d0c4782560b, type: 3}
     com.unity.xr.management.loader_settings: {fileID: 11400000, guid: fd062a9786efda14c9e61b42e269dfdb, type: 2}
