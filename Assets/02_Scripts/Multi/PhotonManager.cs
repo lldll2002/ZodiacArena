@@ -86,7 +86,7 @@ public class PhotonGameManager : MonoBehaviourPunCallbacks
 
         //룸 속성을 정의
         RoomOptions ro = new RoomOptions();
-        ro.MaxPlayers = 6;
+        ro.MaxPlayers = 2;
         ro.IsOpen = true;
         ro.IsVisible = true;
 
@@ -169,7 +169,7 @@ public class PhotonGameManager : MonoBehaviourPunCallbacks
         //방장만 로딩하도록 설정.
         if (PhotonNetwork.IsMasterClient)
         {
-            PhotonNetwork.LoadLevel("01_Scenes/02MultiTest/Game");
+            PhotonNetwork.LoadLevel("01_Scenes/03CardGameVR/RoomEnter");
         }
     }
 

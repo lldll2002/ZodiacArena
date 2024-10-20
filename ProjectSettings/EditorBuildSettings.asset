@@ -23,6 +23,18 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/01_Scenes/02MultiTest/Game.unity
     guid: cfbf34c700951d543be4ea6500fab265
+  - enabled: 1
+    path: Assets/01_Scenes/03CardGameVR/Lobby.unity
+    guid: a151e7cff35889747a3fa30527f2be02
+  - enabled: 1
+    path: Assets/01_Scenes/03CardGameVR/RoomEnter.unity
+    guid: 6aadb2431443347408e2be953f788879
+  - enabled: 1
+    path: Assets/01_Scenes/03CardGameVR/CoinFlip.unity
+    guid: 7b4f877b502324e40842e28889ff99f4
+  - enabled: 1
+    path: Assets/01_Scenes/03CardGameVR/CardSelect.unity
+    guid: 23f24754ea092c649a626892abc4b4a0
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 052faaac586de48259a63d0c4782560b, type: 3}
     com.unity.xr.management.loader_settings: {fileID: 11400000, guid: fd062a9786efda14c9e61b42e269dfdb, type: 2}
