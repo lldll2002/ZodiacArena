@@ -35,6 +35,9 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/01_Scenes/03CardGameVR/CardSelect.unity
     guid: 23f24754ea092c649a626892abc4b4a0
+  - enabled: 1
+    path: Assets/01_Scenes/03CardGameVR/FightCardSelect.unity
+    guid: 4ecb1fdd8a41a7b409db59b2c5234238
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 052faaac586de48259a63d0c4782560b, type: 3}
     com.unity.xr.management.loader_settings: {fileID: 11400000, guid: fd062a9786efda14c9e61b42e269dfdb, type: 2}

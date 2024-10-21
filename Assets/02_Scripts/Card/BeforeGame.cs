@@ -12,8 +12,6 @@ public class BeforeGame : MonoBehaviourPunCallbacks
     [SerializeField] private Button highButton; // 하이 선택 버튼
     [SerializeField] private Button lowButton; // 로우 선택 버튼
 
-    private Photon.Realtime.Player currentPlayer; // 현재 턴을 가진 플레이어
-
     private void Start()
     {
         // PhotonView가 정상적으로 초기화되었는지 확인
@@ -56,14 +54,34 @@ public class BeforeGame : MonoBehaviourPunCallbacks
 
     private void StartCoinFlip()
     {
-        // 동전 던지기 결과를 랜덤으로 결정
-        bool isHeads = Random.Range(0, 2) == 0; // 0: 앞면, 1: 뒷면
-        string result = isHeads ? "Heads" : "Tails";
-        resultText.text = $"Coin flipped: {result}"; // TMP_Text에 결과 표시
+        // 랜덤하게 Heads 또는 Tails 결정, 한 플레이어에게 반드시 Heads 할당
+        bool isHeads = Random.Range(0, 2) == 0; // 0: Heads, 1: Tails
+        resultText.text = $"Coin flipped: {(isHeads ? "Heads" : "Tails")}"; // TMP_Text에 결과 표시
 
-        // 턴 할당
-        currentPlayer = isHeads ? PhotonNetwork.LocalPlayer : GetOtherPlayer();
-        AssignTurn(currentPlayer);
+        // 역할을 할당
+        int headPlayerActorNumber = isHeads ? PhotonNetwork.LocalPlayer.ActorNumber : GetOtherPlayer().ActorNumber;
+        int tailsPlayerActorNumber = isHeads ? GetOtherPlayer().ActorNumber : PhotonNetwork.LocalPlayer.ActorNumber;
+
+        // RPC 호출을 통해 각 플레이어가 자신의 역할을 알 수 있게 함
+        photonView.RPC("AssignRolesRPC", RpcTarget.All, headPlayerActorNumber, tailsPlayerActorNumber);
+    }
+
+    // 모든 클라이언트에서 호출될 RPC 함수
+    [PunRPC]
+    private void AssignRolesRPC(int headPlayerActorNumber, int tailsPlayerActorNumber)
+    {
+        Photon.Realtime.Player headPlayer = PhotonNetwork.CurrentRoom.GetPlayer(headPlayerActorNumber);
+        Photon.Realtime.Player tailsPlayer = PhotonNetwork.CurrentRoom.GetPlayer(tailsPlayerActorNumber);
+
+        // 각 플레이어에 따라 턴을 할당
+        if (PhotonNetwork.LocalPlayer.ActorNumber == headPlayerActorNumber)
+        {
+            AssignTurn(PhotonNetwork.LocalPlayer, true); // Head 플레이어에게 선택 버튼 활성화
+        }
+        else if (PhotonNetwork.LocalPlayer.ActorNumber == tailsPlayerActorNumber)
+        {
+            AssignTurn(PhotonNetwork.LocalPlayer, false); // Tails 플레이어에게 선택 버튼 비활성화
+        }
     }
 
     private Photon.Realtime.Player GetOtherPlayer()
@@ -73,20 +91,21 @@ public class BeforeGame : MonoBehaviourPunCallbacks
             : PhotonNetwork.PlayerList[0];
     }
 
-    private void AssignTurn(Photon.Realtime.Player player)
+    private void AssignTurn(Photon.Realtime.Player player, bool canSelect)
     {
-        Debug.Log($"{player.NickName} is assigned to go first.");
+        Debug.Log($"{player.NickName} is assigned as {(canSelect ? "Heads" : "Tails")}.");
 
-        // 선택 권한이 있는 플레이어에게 하이, 로우 버튼 활성화
-        if (player.IsLocal)
+        if (canSelect) // 하이/로우 선택 가능 여부에 따라
         {
             highButton.gameObject.SetActive(true);
             lowButton.gameObject.SetActive(true);
+            selectionText.text = "You are selecting High/Low"; // 선공 플레이어에게 메시지 표시
         }
         else
         {
-            // 다른 플레이어에게 선택 중인 플레이어 표시
-            selectionText.text = $"{player.NickName} is selecting High/Low";
+            highButton.gameObject.SetActive(false); // 선택할 수 없도록 비활성화
+            lowButton.gameObject.SetActive(false);
+            selectionText.text = $"{player.NickName} is waiting..."; // 후공 플레이어는 기다림
         }
     }
 
@@ -120,8 +139,6 @@ public class BeforeGame : MonoBehaviourPunCallbacks
             StartCoroutine(LoadCardSelectAfterDelay(3f)); // 상대방도 이동
         }
     }
-
-
 
     private IEnumerator LoadCardSelectAfterDelay(float delay)
     {

@@ -44,6 +44,9 @@ MonoBehaviour:
   - AssignTurn
   - OnWinConditionSelected
   - LoadCardSelectRPC
+  - AssignTurnRPC
+  - AssignRolesRPC
+  - NotifyCardSelection
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 1
