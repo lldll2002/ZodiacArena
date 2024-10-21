@@ -740,7 +740,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &466031222
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3294,6 +3294,8 @@ MonoBehaviour:
   nickName: Sesac
   nickNameIf: {fileID: 1640972271}
   enterRoomButton: {fileID: 970716221}
+  roomNameIf: {fileID: 0}
+  makeRoomButton: {fileID: 0}
 --- !u!1 &1659630064
 GameObject:
   m_ObjectHideFlags: 0
@@ -3591,7 +3593,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &1666690703
 MonoBehaviour:
   m_ObjectHideFlags: 0

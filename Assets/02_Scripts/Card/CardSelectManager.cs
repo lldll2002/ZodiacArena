@@ -2,6 +2,7 @@ using Photon.Pun;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using System.Collections;
 using System.Collections.Generic;
 
 public class CardSelectManager : MonoBehaviourPunCallbacks
@@ -11,7 +12,7 @@ public class CardSelectManager : MonoBehaviourPunCallbacks
     [SerializeField] private TMP_Text infoText; // 안내 메시지 표시
     [SerializeField] private Button[] cardButtons; // 카드 버튼 배열
 
-    private List<int> selectedCards = new List<int>(); // 선택된 카드 저장
+    private List<int> selectedCards = new List<int>(); // 플레이어가 선택한 카드
     private int totalCardsToSelect = 3; // 선택해야 할 카드 수
 
     private void Start()
@@ -87,7 +88,14 @@ public class CardSelectManager : MonoBehaviourPunCallbacks
         {
             // 모든 카드 선택 완료
             infoText.text = "모든 카드를 선택했습니다. 다른 플레이어가 선택하기를 기다리는 중...";
-            // 여기에서 다른 플레이어가 선택할 때까지 기다리는 로직 추가
+
+            // 선택한 카드를 Photon Custom Properties에 저장
+            ExitGames.Client.Photon.Hashtable playerProperties = new ExitGames.Client.Photon.Hashtable();
+            playerProperties.Add("selectedCards", selectedCards.ToArray()); // 카드 배열로 저장
+            PhotonNetwork.LocalPlayer.SetCustomProperties(playerProperties);
+
+            // 다른 플레이어가 선택할 때까지 대기 후 씬 전환
+            StartCoroutine(CheckAllPlayersReady());
         }
     }
 
@@ -104,5 +112,29 @@ public class CardSelectManager : MonoBehaviourPunCallbacks
         {
             infoText.text = "모든 카드를 선택했습니다. 다른 플레이어가 선택하기를 기다리는 중...";
         }
+    }
+
+    // 모든 플레이어가 선택 완료했는지 확인하는 코루틴
+    private IEnumerator CheckAllPlayersReady()
+    {
+        bool allPlayersReady = false;
+
+        while (!allPlayersReady)
+        {
+            allPlayersReady = true;
+            foreach (Photon.Realtime.Player player in PhotonNetwork.PlayerList)
+            {
+                // 각 플레이어가 선택한 카드가 있는지 확인
+                if (!player.CustomProperties.ContainsKey("selectedCards"))
+                {
+                    allPlayersReady = false;
+                    break;
+                }
+            }
+            yield return new WaitForSeconds(1f); // 1초 대기 후 다시 확인
+        }
+
+        // 모든 플레이어가 카드를 선택 완료한 경우 씬 전환
+        PhotonNetwork.LoadLevel("FightCardSelect");
     }
 }
