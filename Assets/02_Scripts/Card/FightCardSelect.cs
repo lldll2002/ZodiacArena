@@ -2,6 +2,7 @@ using Photon.Pun;
 using UnityEngine;
 using UnityEngine.UI; // Button을 사용하기 위해 추가
 using TMPro; // TMP_Text를 사용하기 위해 추가
+using ExitGames.Client.Photon; // Hashtable을 사용하기 위해 추가
 using System.Collections;
 
 public class FightCardSelect : MonoBehaviourPunCallbacks
@@ -79,6 +80,9 @@ public class FightCardSelect : MonoBehaviourPunCallbacks
         {
             canSelectCard = false; // 더 이상 카드 선택 불가능하게 설정
             winConditionText.text = $"Confirmed Selection: {selectedCard}";
+
+            // 선택된 카드를 CustomProperties에 저장
+            PhotonNetwork.LocalPlayer.SetCustomProperties(new ExitGames.Client.Photon.Hashtable { { "selectedCard", selectedCard.Value } });
 
             // 모든 플레이어에게 선택을 전파하는 RPC 호출 추가
             photonView.RPC("NotifyCardSelection", RpcTarget.All, selectedCard.Value);

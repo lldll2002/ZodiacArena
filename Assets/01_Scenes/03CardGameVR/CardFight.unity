@@ -353,7 +353,7 @@ GameObject:
   - component: {fileID: 304601611}
   - component: {fileID: 304601610}
   m_Layer: 5
-  m_Name: Text - Player2_card_1
+  m_Name: Text - vs.text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1541,6 +1541,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 970a32bb7909bc047977cf3254ea7ae0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playerNamesText: {fileID: 1370085325}
+  winConditionText: {fileID: 1080440121}
+  player1NameText: {fileID: 1389980921}
+  player2NameText: {fileID: 1512151032}
+  player1CardText: {fileID: 1264271874}
+  player2CardText: {fileID: 608177744}
+  resultText: {fileID: 596145001}
 --- !u!1 &1389980920
 GameObject:
   m_ObjectHideFlags: 0
