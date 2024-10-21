@@ -1508,7 +1508,7 @@ GameObject:
   - component: {fileID: 1370854801}
   - component: {fileID: 1370854802}
   m_Layer: 0
-  m_Name: FightCardSelectManager
+  m_Name: CardFight
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1538,20 +1538,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 1370854800}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a879a2aa7d5b99846a3eb90c513b07ea, type: 3}
+  m_Script: {fileID: 11500000, guid: 970a32bb7909bc047977cf3254ea7ae0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cardButtons:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  cardButtonTexts:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  playerNamesText: {fileID: 1370085325}
-  winConditionText: {fileID: 1080440121}
-  confirmButton: {fileID: 0}
 --- !u!1 &1389980920
 GameObject:
   m_ObjectHideFlags: 0

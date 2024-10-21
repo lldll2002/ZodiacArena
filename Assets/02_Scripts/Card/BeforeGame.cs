@@ -54,7 +54,7 @@ public class BeforeGame : MonoBehaviourPunCallbacks
 
     private void StartCoinFlip()
     {
-        // 랜덤하게 Heads 또는 Tails 결정, 한 플레이어에게 반드시 Heads 할당
+        // 랜덤하게 Heads 또는 Tails 결정
         bool isHeads = Random.Range(0, 2) == 0; // 0: Heads, 1: Tails
         resultText.text = $"Coin flipped: {(isHeads ? "Heads" : "Tails")}"; // TMP_Text에 결과 표시
 
@@ -63,12 +63,12 @@ public class BeforeGame : MonoBehaviourPunCallbacks
         int tailsPlayerActorNumber = isHeads ? GetOtherPlayer().ActorNumber : PhotonNetwork.LocalPlayer.ActorNumber;
 
         // RPC 호출을 통해 각 플레이어가 자신의 역할을 알 수 있게 함
-        photonView.RPC("AssignRolesRPC", RpcTarget.All, headPlayerActorNumber, tailsPlayerActorNumber);
+        photonView.RPC("AssignRolesRPC", RpcTarget.All, headPlayerActorNumber, tailsPlayerActorNumber, isHeads);
     }
 
     // 모든 클라이언트에서 호출될 RPC 함수
     [PunRPC]
-    private void AssignRolesRPC(int headPlayerActorNumber, int tailsPlayerActorNumber)
+    private void AssignRolesRPC(int headPlayerActorNumber, int tailsPlayerActorNumber, bool isHeads)
     {
         Photon.Realtime.Player headPlayer = PhotonNetwork.CurrentRoom.GetPlayer(headPlayerActorNumber);
         Photon.Realtime.Player tailsPlayer = PhotonNetwork.CurrentRoom.GetPlayer(tailsPlayerActorNumber);
@@ -81,6 +81,11 @@ public class BeforeGame : MonoBehaviourPunCallbacks
         else if (PhotonNetwork.LocalPlayer.ActorNumber == tailsPlayerActorNumber)
         {
             AssignTurn(PhotonNetwork.LocalPlayer, false); // Tails 플레이어에게 선택 버튼 비활성화
+        }
+        else
+        {
+            // 게임의 흐름을 방해하지 않도록 추가 처리
+            Debug.LogWarning("Unexpected player assignment during role assignment.");
         }
     }
 

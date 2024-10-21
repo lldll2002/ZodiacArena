@@ -2,6 +2,7 @@ using Photon.Pun;
 using UnityEngine;
 using UnityEngine.UI; // Button을 사용하기 위해 추가
 using TMPro; // TMP_Text를 사용하기 위해 추가
+using System.Collections;
 
 public class FightCardSelect : MonoBehaviourPunCallbacks
 {
@@ -15,6 +16,7 @@ public class FightCardSelect : MonoBehaviourPunCallbacks
     private int[] selectedCards;
     private int? selectedCard = null; // 선택된 카드
     private bool canSelectCard = true; // 카드 선택 가능 여부
+    private int playersConfirmed = 0; // 선택을 확인한 플레이어 수
 
     private void Start()
     {
@@ -102,5 +104,20 @@ public class FightCardSelect : MonoBehaviourPunCallbacks
         {
             opponentSelectionText.text = $"{PhotonNetwork.LocalPlayer.NickName} selected a card. Please wait...";
         }
+
+        // 선택한 플레이어 수 증가
+        playersConfirmed++;
+
+        // 두 플레이어 모두 선택했는지 확인
+        if (playersConfirmed == PhotonNetwork.CurrentRoom.PlayerCount)
+        {
+            StartCoroutine(LoadCardFightSceneAfterDelay(1f)); // 1초 대기 후 CardFight 씬으로 이동
+        }
+    }
+
+    private IEnumerator LoadCardFightSceneAfterDelay(float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        PhotonNetwork.LoadLevel("01_Scenes/03CardGameVR/CardFight");
     }
 }
