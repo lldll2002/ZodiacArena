@@ -3,14 +3,15 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Unity.Services.Authentication;
 using Unity.Services.CloudSave;
-using Unity.Services.Core;
 using UnityEngine;
+using Unity.Services.Core;
+
 
 [System.Serializable]
 public struct PlayerData
 {
     public string name;
-    public int winCount;
+    public int score;
 }
 
 public class LoginManager : MonoBehaviour
@@ -18,29 +19,28 @@ public class LoginManager : MonoBehaviour
     [Header("Player Data")]
     public PlayerData playerData;
 
-    // 1. UGS 초기화
     private async void Awake()
     {
-        // 1-1. UGS 초기화 성공 시 호출되는 콜백
-        UnityServices.Initialized += () =>
-        {
-            Debug.Log("UGS 초기화 성공");
-        };
+        // UGS 초기화 (AuthenticationService와 CloudSaveService를 사용할 수 있습니다.)
+        await InitializeServices();
 
-        // 1-2. UGS 초기화 실패 시 호출되는 콜백
-        UnityServices.InitializeFailed += (ex) =>
-        {
-            Debug.Log($"UGS 초기화 실패: {ex.Message}");
-        };
-
-        // 1-3. Unity 초기화
-        await UnityServices.InitializeAsync();
-
-        // 1-4. 익명 로그인 자동 호출
+        // 익명 로그인 자동 호출
         await SignIn();
     }
 
-    //=====================================================
+    private async Task InitializeServices()
+    {
+        try
+        {
+            await UnityServices.InitializeAsync();
+            Debug.Log("Unity Services 초기화 성공");
+        }
+        catch (Exception ex)
+        {
+            Debug.LogError($"Unity Services 초기화 실패: {ex.Message}");
+        }
+    }
+
     #region Login
     private async Task SignIn()
     {
@@ -57,9 +57,7 @@ public class LoginManager : MonoBehaviour
     }
     #endregion
 
-    //=====================================================
     #region Cloud Save
-    // 플레이어 닉네임 업데이트 함수
     public async void UpdatePlayerNickName(string newNickName)
     {
         try

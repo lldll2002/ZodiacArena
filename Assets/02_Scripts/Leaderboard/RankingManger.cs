@@ -3,9 +3,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using TMPro;
 using UnityEngine;
-using Unity.Services.Authentication;
-using Unity.Services.Core;
 using Unity.Services.Leaderboards;
+using Unity.Services.CloudSave;
 using Unity.Services.Leaderboards.Models;
 
 public class RankingManager : MonoBehaviour
@@ -18,42 +17,62 @@ public class RankingManager : MonoBehaviour
 
     private async void Awake()
     {
-        await UnityServices.InitializeAsync();
-
-        AuthenticationService.Instance.SignedIn += async () =>
-        {
-            Debug.Log("로그인 완료");
-            // 랭킹 데이터 불러오기
-            await LoadAndDisplayRankings();
-        };
-
-        // 익명으로 로그인
-        await AuthenticationService.Instance.SignInAnonymouslyAsync();
+        // 로그인이 이미 되어 있다고 가정하고 바로 랭킹 데이터를 불러오기
+        await LoadAndDisplayRankings();
     }
 
     private async Task LoadAndDisplayRankings()
     {
         try
         {
-            // 모든 플레이어 점수 가져오기
+            // 리더보드에서 모든 플레이어 점수 가져오기
             var response = await LeaderboardsService.Instance.GetScoresAsync(leaderboardId);
-
-            //Debug.Log(JsonConvert.SerializeObject(response));
             entries = response.Results;
 
-            // 승리 횟수에 따라 정렬 (내림차순)
-            var topPlayers = entries.OrderByDescending(entry => entry.Score).Take(5).ToList();
+            // 모든 플레이어의 점수 및 이름을 가져오기 위해 Dictionary를 사용
+            Dictionary<string, string> playerNames = new();
 
-            // 상위 5명의 점수와 이름을 TMP 텍스트에 표시
-            for (int i = 0; i < topPlayers.Count; i++)
+            // Cloud Save에서 모든 플레이어의 이름을 불러오기
+            foreach (var entry in entries)
             {
-                rankTexts[i].text = $"{topPlayers[i].PlayerName}: {topPlayers[i].Score}"; // 플레이어 이름과 점수 출력
+                Debug.Log($"Loading player data for PlayerId: {entry.PlayerId}"); // PlayerId 로그
+                var playerData = await CloudSaveService.Instance.Data.LoadAsync(new HashSet<string> { entry.PlayerId });
+
+                // 클라우드 데이터가 있는지 확인
+                if (playerData != null && playerData.Count > 0)
+                {
+                    foreach (var data in playerData)
+                    {
+                        Debug.Log($"Key: {data.Key}, Value: {data.Value}"); // 각 데이터 로그
+                    }
+
+                    // 각 플레이어의 이름을 Cloud Save에서 가져오기
+                    string playerName = playerData.ContainsKey("playerName") ? playerData["playerName"].ToString() : "Unknown Player";
+                    playerNames[entry.PlayerId] = playerName;
+                }
+                else
+                {
+                    Debug.Log($"No data found for PlayerId: {entry.PlayerId}");
+                    playerNames[entry.PlayerId] = "Unknown Player"; // 데이터가 없을 경우 기본값 설정
+                }
             }
 
-            // 5명 미만일 경우 남은 텍스트는 공백으로 설정
-            for (int i = topPlayers.Count; i < rankTexts.Length; i++)
+            // 상위 플레이어를 내림차순으로 정렬
+            var sortedEntries = entries.OrderByDescending(entry => entry.Score).ToList();
+
+            // 최대 5명의 플레이어를 TMP 텍스트에 표시
+            for (int i = 0; i < rankTexts.Length; i++)
             {
-                rankTexts[i].text = "";
+                if (i < sortedEntries.Count)
+                {
+                    var entry = sortedEntries[i];
+                    string playerName = playerNames[entry.PlayerId]; // 매칭된 플레이어 이름
+                    rankTexts[i].text = $"{playerName}: {entry.Score}";
+                }
+                else
+                {
+                    rankTexts[i].text = ""; // 남은 텍스트는 공백으로 설정
+                }
             }
         }
         catch (System.Exception e)
@@ -61,4 +80,5 @@ public class RankingManager : MonoBehaviour
             Debug.LogError($"랭킹 데이터 로드 실패: {e.Message}");
         }
     }
+
 }
