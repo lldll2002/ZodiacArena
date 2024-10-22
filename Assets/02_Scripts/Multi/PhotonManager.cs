@@ -13,15 +13,15 @@ public class PhotonGameManager : MonoBehaviourPunCallbacks
     [SerializeField] private const string version = "1.0";
     [SerializeField] private string nickName = "Sesac";
 
-    //============================================================
+    //=============================================================
     // 2. Lobby UI 관련
     [Header("UI")]
-    [SerializeField] private TMP_InputField nickNameIf;
+    [SerializeField] private TMP_Text nickNameText; // 닉네임을 표시할 텍스트
 
     [Header("Button")]
     [SerializeField] private Button enterRoomButton;
 
-    //============================================================
+    //=============================================================
     // 3. 룸 만들기
     [Header("Room")]
     [SerializeField] private TMP_InputField roomNameIf;
@@ -54,18 +54,21 @@ public class PhotonGameManager : MonoBehaviourPunCallbacks
         // LoginManager를 찾아서 저장
         loginManager = FindObjectOfType<LoginManager>();
 
+        // PlayerPrefs에서 저장한 닉네임 로드
         if (PlayerPrefs.HasKey("NICK_NAME"))
         {
             nickName = PlayerPrefs.GetString("NICK_NAME");
-            nickNameIf.text = nickName;
+            PhotonNetwork.NickName = nickName; // 포톤 닉네임 설정
         }
 
-        SetNickName();
+        // UI에 닉네임 업데이트
+        nickNameText.text = nickName; // 닉네임 표시
 
         // 버튼 이벤트 연결
         enterRoomButton.onClick.AddListener(() => OnLoginButtonClick());
         makeRoomButton.onClick.AddListener(() => OnMakeRoomButtonClick());
     }
+
     #endregion
 
     //---------------------------------------------------------
@@ -73,13 +76,11 @@ public class PhotonGameManager : MonoBehaviourPunCallbacks
     private void SetNickName()
     {
         // 닉네임이 비어 있는지 확인
-        if (string.IsNullOrEmpty(nickNameIf.text))
+        if (string.IsNullOrEmpty(nickName))
         {
             nickName = $"USER_{Random.Range(0, 1000):0000}";
-            nickNameIf.text = nickName;
         }
 
-        nickName = nickNameIf.text;
         PhotonNetwork.NickName = nickName;
 
         // 닉네임을 Cloud Save에 업데이트
@@ -91,7 +92,7 @@ public class PhotonGameManager : MonoBehaviourPunCallbacks
         SetNickName();
 
         PlayerPrefs.SetString("NICK_NAME", nickName);
-        PhotonNetwork.JoinRandomRoom();
+        PhotonNetwork.JoinRandomRoom(); // 방에 들어가는 기능은 여기서 처리합니다.
     }
     #endregion
 

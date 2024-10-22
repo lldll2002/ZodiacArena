@@ -62,6 +62,8 @@ public class BeforeGame : MonoBehaviourPunCallbacks
         int headPlayerActorNumber = isHeads ? PhotonNetwork.LocalPlayer.ActorNumber : GetOtherPlayer().ActorNumber;
         int tailsPlayerActorNumber = isHeads ? GetOtherPlayer().ActorNumber : PhotonNetwork.LocalPlayer.ActorNumber;
 
+        Debug.Log($"Head Player: {headPlayerActorNumber}, Tails Player: {tailsPlayerActorNumber}");
+
         // RPC 호출을 통해 각 플레이어가 자신의 역할을 알 수 있게 함
         photonView.RPC("AssignRolesRPC", RpcTarget.All, headPlayerActorNumber, tailsPlayerActorNumber, isHeads);
     }
@@ -84,7 +86,6 @@ public class BeforeGame : MonoBehaviourPunCallbacks
         }
         else
         {
-            // 게임의 흐름을 방해하지 않도록 추가 처리
             Debug.LogWarning("Unexpected player assignment during role assignment.");
         }
     }
