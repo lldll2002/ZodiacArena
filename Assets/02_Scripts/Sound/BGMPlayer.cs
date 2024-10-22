@@ -32,9 +32,9 @@ public class BGMPlayer : MonoBehaviour
     void Update()
     {
         // 현재 씬의 인덱스를 확인하여 특정 씬에 도달하면 BGMPlayer를 파괴
-        if (SceneManager.GetActiveScene().buildIndex == 3) // 4번째 씬은 인덱스가 3입니다
+        if (SceneManager.GetActiveScene().buildIndex == 5) // 4번째 씬은 인덱스가 3입니다
         {
-            StartCoroutine(FadeOutAndDestroy(0.1f)); // 1초 동안 페이드 아웃 후 파괴
+            StartCoroutine(FadeOutAndDestroy(3.0f)); // 1초 동안 페이드 아웃 후 파괴
         }
     }
 
