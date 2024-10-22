@@ -56,7 +56,7 @@ public class CardSelectManager : MonoBehaviourPunCallbacks
         {
             int cardNumber = numbers[i];
             int buttonIndex = i; // 클로저 문제를 피하기 위해
-            cardButtons[i].GetComponentInChildren<TMP_Text>().text = cardNumber.ToString();
+            //cardButtons[i].GetComponentInChildren<TMP_Text>().text = cardNumber.ToString();
             cardButtons[i].onClick.AddListener(() => OnCardButtonClicked(cardNumber, buttonIndex));
             cardButtons[i].gameObject.SetActive(true); // 버튼 활성화
         }
