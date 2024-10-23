@@ -20,7 +20,6 @@ public class FightCardSelect : MonoBehaviourPunCallbacks
     private bool canSelectCard = true; // 카드 선택 가능 여부
     private int playersConfirmed = 0; // 선택을 확인한 플레이어 수
 
-
     private void Start()
     {
         // 로컬 플레이어의 선택된 카드를 가져오기
@@ -41,13 +40,13 @@ public class FightCardSelect : MonoBehaviourPunCallbacks
                     // 버튼 클릭 이벤트 추가
                     cardButtons[i].onClick.AddListener(() => SelectCard(cardValue));
 
-                    // 카드 이미지 설정
-                    if (cardValue < cardSprites.Length) // 카드 이미지가 존재하는지 확인
+                    // 카드 이미지 설정 (cardValue - 1)
+                    if (cardValue - 1 < cardSprites.Length) // 카드 이미지가 존재하는지 확인
                     {
-                        cardButtons[i].GetComponent<Image>().sprite = cardSprites[cardValue]; // 카드 이미지 설정
+                        cardButtons[i].GetComponent<Image>().sprite = cardSprites[cardValue - 1]; // 카드 이미지 설정
                     }
 
-                    // 카드 숫자 텍스트 설정
+                    // 카드 숫자 텍스트 설정 (cardValue 그대로 사용)
                     cardButtonTexts[i].text = cardValue.ToString(); // 카드 숫자 텍스트 설정
                 }
                 else
@@ -64,7 +63,6 @@ public class FightCardSelect : MonoBehaviourPunCallbacks
         // 선택 확인 버튼 클릭 이벤트 추가
         confirmButton.onClick.AddListener(ConfirmSelection);
     }
-
 
     private void UpdatePlayerNames()
     {

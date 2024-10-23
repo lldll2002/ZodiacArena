@@ -81,6 +81,8 @@ public class CardSelectManager : MonoBehaviourPunCallbacks
         {
             selectedCards.Add(cardNumber);
             cardButtons[buttonIndex].interactable = false; // 버튼 비활성화
+                                                           // 선택된 카드를 표시하기 위해 버튼의 텍스트를 변경
+                                                           //cardButtons[buttonIndex].GetComponentInChildren<TMP_Text>().text = $"선택됨: {cardNumber}";
             UpdateInfoText();
         }
 
