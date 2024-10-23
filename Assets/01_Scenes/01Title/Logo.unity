@@ -1170,6 +1170,17 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 2619654352318296579, guid: 52445361a82397347841b9c034107bda, type: 3}
   m_PrefabInstance: {fileID: 2039155115}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &2039155117 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2994876924590288877, guid: 52445361a82397347841b9c034107bda, type: 3}
+  m_PrefabInstance: {fileID: 2039155115}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5d9b00287331128418f43a9931a23c3f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &2041211321
 GameObject:
   m_ObjectHideFlags: 0
@@ -1332,7 +1343,7 @@ PrefabInstance:
     - target: {fileID: 3969824422501734461, guid: de2b1c7bbdc50aa43b1b16f481847231, type: 3}
       propertyPath: fadeScreen
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 2039155117}
     - target: {fileID: 3969824422501734461, guid: de2b1c7bbdc50aa43b1b16f481847231, type: 3}
       propertyPath: audioManager
       value: 
