@@ -1822,7 +1822,7 @@ MonoBehaviour:
   player1CardText: {fileID: 1264271874}
   player2CardText: {fileID: 608177744}
   resultText: {fileID: 596145001}
-  nextButton: {fileID: 0}
+  nextButton: {fileID: 517279599}
 --- !u!1 &1389980920
 GameObject:
   m_ObjectHideFlags: 0
