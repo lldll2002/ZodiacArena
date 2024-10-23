@@ -13,11 +13,13 @@ public class FightCardSelect : MonoBehaviourPunCallbacks
     [SerializeField] private TMP_Text winConditionText; // 승리 조건 텍스트
     [SerializeField] private TMP_Text opponentSelectionText; // 상대방 선택 상태 텍스트
     [SerializeField] private Button confirmButton; // 선택 확인 버튼
+    [SerializeField] private Sprite[] cardSprites; // 카드 이미지 배열
 
     private int[] selectedCards;
     private int? selectedCard = null; // 선택된 카드
     private bool canSelectCard = true; // 카드 선택 가능 여부
     private int playersConfirmed = 0; // 선택을 확인한 플레이어 수
+
 
     private void Start()
     {
@@ -29,16 +31,24 @@ public class FightCardSelect : MonoBehaviourPunCallbacks
             // 카드 배열을 오름차순으로 정렬
             System.Array.Sort(selectedCards);
 
-            // 버튼에 카드 값 할당
+            // 버튼에 카드 이미지 할당
             for (int i = 0; i < cardButtons.Length; i++)
             {
                 if (i < selectedCards.Length)
                 {
-                    cardButtonTexts[i].text = selectedCards[i].ToString(); // 카드 값 텍스트 설정
                     int cardValue = selectedCards[i]; // 캡처를 위한 변수
 
                     // 버튼 클릭 이벤트 추가
                     cardButtons[i].onClick.AddListener(() => SelectCard(cardValue));
+
+                    // 카드 이미지 설정
+                    if (cardValue < cardSprites.Length) // 카드 이미지가 존재하는지 확인
+                    {
+                        cardButtons[i].GetComponent<Image>().sprite = cardSprites[cardValue]; // 카드 이미지 설정
+                    }
+
+                    // 카드 숫자 텍스트 설정
+                    cardButtonTexts[i].text = cardValue.ToString(); // 카드 숫자 텍스트 설정
                 }
                 else
                 {
@@ -54,6 +64,7 @@ public class FightCardSelect : MonoBehaviourPunCallbacks
         // 선택 확인 버튼 클릭 이벤트 추가
         confirmButton.onClick.AddListener(ConfirmSelection);
     }
+
 
     private void UpdatePlayerNames()
     {
