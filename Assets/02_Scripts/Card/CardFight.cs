@@ -2,6 +2,7 @@ using Photon.Pun;
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement; // SceneManager를 사용하기 위해 추가
+using UnityEngine.UI; // Button 사용을 위해 추가
 
 public class CardFight : MonoBehaviourPunCallbacks
 {
@@ -13,6 +14,7 @@ public class CardFight : MonoBehaviourPunCallbacks
     [SerializeField] private TMP_Text player1CardText; // 플레이어 1 선택한 카드 텍스트
     [SerializeField] private TMP_Text player2CardText; // 플레이어 2 선택한 카드 텍스트
     [SerializeField] private TMP_Text resultText; // 승리 결과 표시 텍스트
+    [SerializeField] private Button nextButton; // 버튼 변수 추가
 
     private int player1Card; // 플레이어 1 선택한 카드
     private int player2Card; // 플레이어 2 선택한 카드
@@ -26,16 +28,14 @@ public class CardFight : MonoBehaviourPunCallbacks
 
         // 승리 조건 확인
         CheckWinner();
+
+        // 버튼 클릭 이벤트 연결
+        nextButton.onClick.AddListener(OnClickToFightResult);
     }
 
     void Update()
     {
-        // 마우스 왼쪽 버튼 클릭 감지
-        if (Input.GetMouseButtonDown(0) && !hasClicked)
-        {
-            hasClicked = true; // 클릭 플래그 설정
-            OnClickToFightResult();
-        }
+        // Update 메서드에서 마우스 클릭 감지 코드를 제거할 수 있습니다.
     }
 
     private void UpdatePlayerInfo()
@@ -137,7 +137,6 @@ public class CardFight : MonoBehaviourPunCallbacks
             Invoke("LoadFightResultScene", 0.5f); // 0.5초 후에 씬 전환
         }
     }
-
 
     private void LoadFightResultScene()
     {

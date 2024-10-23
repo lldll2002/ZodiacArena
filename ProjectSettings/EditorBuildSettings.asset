@@ -13,7 +13,7 @@ EditorBuildSettings:
     guid: c0a4b4d56e5864a4f8298903eae46839
   - enabled: 1
     path: Assets/01_Scenes/01Title/InputName.unity
-    guid: b39d1944844117a4389cd4915e2e0633
+    guid: 272371a6d2757aa4c8685587845f49d0
   - enabled: 1
     path: Assets/01_Scenes/03CardGameVR/Lobby.unity
     guid: a151e7cff35889747a3fa30527f2be02

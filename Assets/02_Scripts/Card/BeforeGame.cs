@@ -88,6 +88,9 @@ public class BeforeGame : MonoBehaviourPunCallbacks
         {
             Debug.LogWarning("Unexpected player assignment during role assignment.");
         }
+
+        // Debug Log 추가: 역할 할당 정보 확인
+        Debug.Log($"Role assignment: {headPlayer.NickName} (Heads), {tailsPlayer.NickName} (Tails)");
     }
 
     private Photon.Realtime.Player GetOtherPlayer()
