@@ -4,6 +4,7 @@ using Photon.Realtime;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement; // 추가된 부분
 
 public class InputNameManager : MonoBehaviourPunCallbacks
 {
@@ -63,6 +64,8 @@ public class InputNameManager : MonoBehaviourPunCallbacks
 
         PlayerPrefs.SetString("NICK_NAME", nickName);
 
+        // 로비 씬으로 전환
+        SceneManager.LoadScene("01_Scenes/03CardGameVR/Lobby"); // "LobbyScene"을 실제 로비 씬의 이름으로 변경하세요.
     }
     #endregion
 }
