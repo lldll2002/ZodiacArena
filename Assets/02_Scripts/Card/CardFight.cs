@@ -3,6 +3,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement; // SceneManager를 사용하기 위해 추가
 using UnityEngine.UI; // Button 사용을 위해 추가
+using System.Collections; // IEnumerator 사용을 위해 추가
 
 public class CardFight : MonoBehaviourPunCallbacks
 {
@@ -33,14 +34,8 @@ public class CardFight : MonoBehaviourPunCallbacks
         // 유저명 및 승리 조건 초기화
         UpdatePlayerInfo();
 
-        // 별자리 모델 스폰
-        SpawnZodiacModels();
-
-        // 승리 조건 확인
-        CheckWinner();
-
-        // 버튼 클릭 이벤트 연결
-        nextButton.onClick.AddListener(OnClickToFightResult);
+        // 컷씬 시작
+        StartCoroutine(PlayCutscene());
     }
 
     private void UpdatePlayerInfo()
@@ -140,28 +135,57 @@ public class CardFight : MonoBehaviourPunCallbacks
         }
     }
 
+    private IEnumerator PlayCutscene()
+    {
+        // 별자리 모델의 위치를 가져오기
+        GameObject player1Zodiac = Instantiate(zodiacPrefabs[player1Card - 1], player1SpawnPoint.position, player1SpawnPoint.rotation);
+        GameObject player2Zodiac = Instantiate(zodiacPrefabs[player2Card - 1], player2SpawnPoint.position, player2SpawnPoint.rotation);
+
+        // 두 모델을 중간 지점으로 이동
+        Vector3 midpoint = (player1SpawnPoint.position + player2SpawnPoint.position) / 2;
+
+        // 이동 속도 설정
+        float speed = 3f;
+
+        // 두 모델이 중간 지점으로 이동
+        while (Vector3.Distance(player1Zodiac.transform.position, midpoint) > 0.1f || Vector3.Distance(player2Zodiac.transform.position, midpoint) > 0.1f)
+        {
+            player1Zodiac.transform.position = Vector3.MoveTowards(player1Zodiac.transform.position, midpoint, speed * Time.deltaTime);
+            player2Zodiac.transform.position = Vector3.MoveTowards(player2Zodiac.transform.position, midpoint, speed * Time.deltaTime);
+            yield return null; // 한 프레임 대기
+        }
+
+        // 부딪히는 효과
+        yield return new WaitForSeconds(0.5f); // 부딪히는 시간 대기
+
+        // 승자에 따라 쓰러지는 연출
+        if (player1Card > player2Card)
+        {
+            player2Zodiac.transform.Rotate(-90, 0, 0); // 플레이어 2가 쓰러짐
+            player2Zodiac.transform.position += new Vector3(0, -1, 0); // 아래로 이동
+        }
+        else if (player1Card < player2Card)
+        {
+            player1Zodiac.transform.Rotate(-90, 0, 0); // 플레이어 1이 쓰러짐
+            player1Zodiac.transform.position += new Vector3(0, -1, 0); // 아래로 이동
+        }
+
+        // 컷씬이 끝난 후 UI 활성화
+        yield return new WaitForSeconds(1f); // 쓰러짐 연출 대기
+        playerNamesText.gameObject.SetActive(true);
+        winConditionText.gameObject.SetActive(true);
+        player1NameText.gameObject.SetActive(true);
+        player2NameText.gameObject.SetActive(true);
+        player1CardText.gameObject.SetActive(true);
+        player2CardText.gameObject.SetActive(true);
+        resultText.gameObject.SetActive(true);
+        nextButton.gameObject.SetActive(true); // 다음 버튼 활성화
+    }
+
     private void OnClickToFightResult()
     {
-        // playerWon 값을 안전하게 가져오기
-        bool playerWon = false;
-        if (PhotonNetwork.LocalPlayer.CustomProperties.TryGetValue("playerWon", out object value) && value is bool)
-        {
-            playerWon = (bool)value;
-        }
-
-        // 승리 여부를 PlayerPrefs에 저장
-        PlayerPrefs.SetInt("PlayerWon", playerWon ? 1 : 0); // 이겼으면 1, 졌으면 0
-
-        if (PhotonNetwork.IsConnected)
-        {
-            PhotonNetwork.LeaveRoom(); // 방을 떠남
-            // LeaveRoom의 콜백을 기다렸다가 씬 전환
-            Invoke("LoadFightResultScene", 0.5f); // 0.5초 후에 씬 전환
-        }
+        // 다음 장면으로 전환
+        SceneManager.LoadScene("FightResult");
     }
 
-    private void LoadFightResultScene()
-    {
-        SceneManager.LoadScene("01_Scenes/03CardGameVR/FightResult");
-    }
 }
