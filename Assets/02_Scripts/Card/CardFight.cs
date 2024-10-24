@@ -6,15 +6,22 @@ using UnityEngine.UI; // Button 사용을 위해 추가
 
 public class CardFight : MonoBehaviourPunCallbacks
 {
+    [Header("UI")]
     [SerializeField] private TMP_Text playerNamesText; // 플레이어 vs. 플레이어 닉네임 표시 텍스트
     [SerializeField] private TMP_Text winConditionText; // 승리 조건 표시 텍스트
 
+    [Header("Player Info")]
     [SerializeField] private TMP_Text player1NameText; // 플레이어 1 이름 표시 텍스트
     [SerializeField] private TMP_Text player2NameText; // 플레이어 2 이름 표시 텍스트
     [SerializeField] private TMP_Text player1CardText; // 플레이어 1 선택한 카드 텍스트
     [SerializeField] private TMP_Text player2CardText; // 플레이어 2 선택한 카드 텍스트
     [SerializeField] private TMP_Text resultText; // 승리 결과 표시 텍스트
     [SerializeField] private Button nextButton; // 버튼 변수 추가
+
+    [Header("Model summon")]
+    [SerializeField] private Transform player1SpawnPoint; // 플레이어 1의 별자리 모델이 생성될 위치
+    [SerializeField] private Transform player2SpawnPoint; // 플레이어 2의 별자리 모델이 생성될 위치
+    [SerializeField] private GameObject[] zodiacPrefabs; // 1~12 사이의 별자리 모델을 담은 배열 (별자리 프리팹)
 
     private int player1Card; // 플레이어 1 선택한 카드
     private int player2Card; // 플레이어 2 선택한 카드
@@ -26,16 +33,14 @@ public class CardFight : MonoBehaviourPunCallbacks
         // 유저명 및 승리 조건 초기화
         UpdatePlayerInfo();
 
+        // 별자리 모델 스폰
+        SpawnZodiacModels();
+
         // 승리 조건 확인
         CheckWinner();
 
         // 버튼 클릭 이벤트 연결
         nextButton.onClick.AddListener(OnClickToFightResult);
-    }
-
-    void Update()
-    {
-        // Update 메서드에서 마우스 클릭 감지 코드를 제거할 수 있습니다.
     }
 
     private void UpdatePlayerInfo()
@@ -66,6 +71,23 @@ public class CardFight : MonoBehaviourPunCallbacks
         winConditionText.text = PhotonNetwork.LocalPlayer.CustomProperties.ContainsKey("winCondition")
             ? (string)PhotonNetwork.LocalPlayer.CustomProperties["winCondition"]
             : "High"; // 기본값 설정
+    }
+
+    private void SpawnZodiacModels()
+    {
+        // player1Card에 해당하는 별자리 프리팹 생성 (1~12 사이 값)
+        if (player1Card >= 1 && player1Card <= 12)
+        {
+            GameObject player1ZodiacPrefab = zodiacPrefabs[player1Card - 1]; // 배열이 0부터 시작하므로 -1
+            Instantiate(player1ZodiacPrefab, player1SpawnPoint.position, player1SpawnPoint.rotation);
+        }
+
+        // player2Card에 해당하는 별자리 프리팹 생성 (1~12 사이 값)
+        if (player2Card >= 1 && player2Card <= 12)
+        {
+            GameObject player2ZodiacPrefab = zodiacPrefabs[player2Card - 1]; // 배열이 0부터 시작하므로 -1
+            Instantiate(player2ZodiacPrefab, player2SpawnPoint.position, player2SpawnPoint.rotation);
+        }
     }
 
     private void CheckWinner()
@@ -133,7 +155,7 @@ public class CardFight : MonoBehaviourPunCallbacks
         if (PhotonNetwork.IsConnected)
         {
             PhotonNetwork.LeaveRoom(); // 방을 떠남
-                                       // LeaveRoom의 콜백을 기다렸다가 씬 전환
+            // LeaveRoom의 콜백을 기다렸다가 씬 전환
             Invoke("LoadFightResultScene", 0.5f); // 0.5초 후에 씬 전환
         }
     }
