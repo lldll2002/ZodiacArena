@@ -1,12 +1,13 @@
 using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class ZodiacSign : MonoBehaviour
 {
     public TMP_InputField birthdayInput; // 생일을 입력받는 TMP_InputField
-    public Button checkButton; // 버튼
-
+    public Button checkButton; // 생일 결정 버튼
+    public Button toLobbyButton; // 로비로 이동하는 버튼
 
     [Header("Constellation Prefab")]
     // 각 별자리에 대응하는 프리팹
@@ -28,8 +29,12 @@ public class ZodiacSign : MonoBehaviour
 
     void Start()
     {
+        // 로비 버튼을 비활성화
+        toLobbyButton.gameObject.SetActive(false);
+
         // 버튼 클릭 이벤트 등록
         checkButton.onClick.AddListener(CheckZodiacSign);
+        toLobbyButton.onClick.AddListener(ToLobby);
     }
 
     void CheckZodiacSign()
@@ -51,6 +56,10 @@ public class ZodiacSign : MonoBehaviour
 
             // 해당 별자리에 맞는 프리팹 생성
             InstantiateZodiacModel(zodiacSign);
+
+            // checkButton을 비활성화하고 toLobbyButton을 활성화
+            checkButton.gameObject.SetActive(false);
+            toLobbyButton.gameObject.SetActive(true);
         }
         else
         {
@@ -87,6 +96,8 @@ public class ZodiacSign : MonoBehaviour
 
         return "알 수 없음"; // 잘못된 입력 처리
     }
+
+
 
     // 별자리에 해당하는 프리팹을 Instantiate하는 함수
     void InstantiateZodiacModel(string zodiac)
@@ -147,5 +158,12 @@ public class ZodiacSign : MonoBehaviour
             // 특정 스크립트 컴포넌트를 추가 (여기서는 MyZodiacScript라는 스크립트를 예로 듬)
             spawnedObject.AddComponent<RotateObject>();
         }
+    }
+
+
+
+    void ToLobby()
+    {
+        SceneManager.LoadScene("01_Scenes/03CardGameVR/Lobby"); // "LobbyScene"을 실제 로비 씬의 이름으로 변경하세요.
     }
 }
