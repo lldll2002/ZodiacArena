@@ -24,18 +24,52 @@ public class CardFight : MonoBehaviourPunCallbacks
     [SerializeField] private Transform player2SpawnPoint; // 플레이어 2의 별자리 모델이 생성될 위치
     [SerializeField] private GameObject[] zodiacPrefabs; // 1~12 사이의 별자리 모델을 담은 배열 (별자리 프리팹)
 
+    [Header("Effects")]
+    [SerializeField] private GameObject visualEffectPrefab; // 비주얼 이펙트 프리팹
+    [SerializeField] private GameObject collisionEffectPrefab; // 부딪힘 효과 프리팝
+    [SerializeField] private GameObject winEffectPrefab; // 승리 이펙트 프리팹
+
     private int player1Card; // 플레이어 1 선택한 카드
     private int player2Card; // 플레이어 2 선택한 카드
 
     private bool hasClicked = false; // 중복 클릭 방지 변수
+
+    private GameObject player1ZodiacInstance; // 플레이어 1의 별자리 모델
+    private GameObject player2ZodiacInstance; // 플레이어 2의 별자리 모델
+    private GameObject visualEffectInstance; // 비주얼 이펙트 인스턴스
 
     void Start()
     {
         // 유저명 및 승리 조건 초기화
         UpdatePlayerInfo();
 
+        // UI 요소 비활성화
+        playerNamesText.gameObject.SetActive(false);
+        winConditionText.gameObject.SetActive(false);
+        player1NameText.gameObject.SetActive(false);
+        player2NameText.gameObject.SetActive(false);
+        player1CardText.gameObject.SetActive(false);
+        player2CardText.gameObject.SetActive(false);
+        resultText.gameObject.SetActive(false);
+        nextButton.gameObject.SetActive(false); // 다음 버튼 비활성화
+
+        // 다음 버튼 클릭 이벤트 리스너 추가
+        nextButton.onClick.AddListener(OnNextButtonClicked);
+
         // 컷씬 시작
         StartCoroutine(PlayCutscene());
+    }
+
+    private void OnNextButtonClicked()
+    {
+        // Photon Room을 나가고 FightResult 씬으로 이동
+        PhotonNetwork.LeaveRoom();
+    }
+
+    public override void OnLeftRoom()
+    {
+        // 방을 나갔을 때 FightResult 씬으로 이동
+        SceneManager.LoadScene("01_Scenes/03CardGameVR/FightResult");
     }
 
     private void UpdatePlayerInfo()
@@ -68,110 +102,63 @@ public class CardFight : MonoBehaviourPunCallbacks
             : "High"; // 기본값 설정
     }
 
-    private void SpawnZodiacModels()
-    {
-        // player1Card에 해당하는 별자리 프리팹 생성 (1~12 사이 값)
-        if (player1Card >= 1 && player1Card <= 12)
-        {
-            GameObject player1ZodiacPrefab = zodiacPrefabs[player1Card - 1]; // 배열이 0부터 시작하므로 -1
-            Instantiate(player1ZodiacPrefab, player1SpawnPoint.position, player1SpawnPoint.rotation);
-        }
-
-        // player2Card에 해당하는 별자리 프리팹 생성 (1~12 사이 값)
-        if (player2Card >= 1 && player2Card <= 12)
-        {
-            GameObject player2ZodiacPrefab = zodiacPrefabs[player2Card - 1]; // 배열이 0부터 시작하므로 -1
-            Instantiate(player2ZodiacPrefab, player2SpawnPoint.position, player2SpawnPoint.rotation);
-        }
-    }
-
-    private void CheckWinner()
-    {
-        // 하이라면 높은 숫자를 선택한 플레이어가 승리
-        // 로우라면 낮은 숫자를 선택한 플레이어가 승리
-        if (player1Card > player2Card)
-        {
-            resultText.text = $"{PhotonNetwork.PlayerList[0].NickName} wins with {player1Card}!";
-            SetPlayerWinStatus(true, false); // 플레이어 1 승리
-        }
-        else if (player1Card < player2Card)
-        {
-            resultText.text = $"{PhotonNetwork.PlayerList[1].NickName} wins with {player2Card}!";
-            SetPlayerWinStatus(false, true); // 플레이어 2 승리
-        }
-        else
-        {
-            resultText.text = "It's a tie!";
-            SetPlayerWinStatus(false, false); // 무승부
-        }
-    }
-
-    private void SetPlayerWinStatus(bool player1Won, bool player2Won)
-    {
-        // 현재 플레이어가 플레이어 1인지 2인지 확인
-        if (PhotonNetwork.LocalPlayer == PhotonNetwork.PlayerList[0])
-        {
-            PhotonNetwork.LocalPlayer.SetCustomProperties(new ExitGames.Client.Photon.Hashtable
-            {
-                { "playerWon", player1Won },
-            });
-            // 플레이어 2 승리 여부 저장
-            PhotonNetwork.PlayerList[1].SetCustomProperties(new ExitGames.Client.Photon.Hashtable
-            {
-                { "playerWon", player2Won },
-            });
-        }
-        else
-        {
-            PhotonNetwork.LocalPlayer.SetCustomProperties(new ExitGames.Client.Photon.Hashtable
-            {
-                { "playerWon", player2Won },
-            });
-            // 플레이어 1 승리 여부 저장
-            PhotonNetwork.PlayerList[0].SetCustomProperties(new ExitGames.Client.Photon.Hashtable
-            {
-                { "playerWon", player1Won },
-            });
-        }
-    }
-
     private IEnumerator PlayCutscene()
     {
-        // 별자리 모델의 위치를 가져오기
-        GameObject player1Zodiac = Instantiate(zodiacPrefabs[player1Card - 1], player1SpawnPoint.position, player1SpawnPoint.rotation);
-        GameObject player2Zodiac = Instantiate(zodiacPrefabs[player2Card - 1], player2SpawnPoint.position, player2SpawnPoint.rotation);
+        // 플레이어 1의 카드 모델 생성 및 비주얼 이펙트 실행
+        yield return StartCoroutine(SpawnZodiacModel(player1Card, player1SpawnPoint, instance => player1ZodiacInstance = instance));
+        yield return new WaitForSeconds(1f); // 모델 생성 후 대기
 
-        // 두 모델을 중간 지점으로 이동
-        Vector3 midpoint = (player1SpawnPoint.position + player2SpawnPoint.position) / 2;
+        // 플레이어 2의 카드 모델 생성 및 비주얼 이펙트 실행
+        yield return StartCoroutine(SpawnZodiacModel(player2Card, player2SpawnPoint, instance => player2ZodiacInstance = instance));
+        yield return new WaitForSeconds(1f); // 모델 생성 후 대기
 
-        // 이동 속도 설정
-        float speed = 3f;
+        // 비주얼 이펙트 생성 (부딪히기 전)
+        visualEffectInstance = Instantiate(visualEffectPrefab, (player1ZodiacInstance.transform.position + player2ZodiacInstance.transform.position) / 2, Quaternion.identity);
 
         // 두 모델이 중간 지점으로 이동
-        while (Vector3.Distance(player1Zodiac.transform.position, midpoint) > 0.1f || Vector3.Distance(player2Zodiac.transform.position, midpoint) > 0.1f)
+        Vector3 midpoint = (player1ZodiacInstance.transform.position + player2ZodiacInstance.transform.position) / 2;
+        float speed = 1f; // 속도 조절
+
+        // 두 모델이 중간 지점으로 이동
+        while (Vector3.Distance(player1ZodiacInstance.transform.position, midpoint) > 0.1f || Vector3.Distance(player2ZodiacInstance.transform.position, midpoint) > 0.1f)
         {
-            player1Zodiac.transform.position = Vector3.MoveTowards(player1Zodiac.transform.position, midpoint, speed * Time.deltaTime);
-            player2Zodiac.transform.position = Vector3.MoveTowards(player2Zodiac.transform.position, midpoint, speed * Time.deltaTime);
+            player1ZodiacInstance.transform.position = Vector3.MoveTowards(player1ZodiacInstance.transform.position, midpoint, speed * Time.deltaTime);
+            player2ZodiacInstance.transform.position = Vector3.MoveTowards(player2ZodiacInstance.transform.position, midpoint, speed * Time.deltaTime);
             yield return null; // 한 프레임 대기
         }
 
-        // 부딪히는 효과
-        yield return new WaitForSeconds(0.5f); // 부딪히는 시간 대기
+        // 부딪히는 효과 생성
+        GameObject collisionEffectInstance = Instantiate(collisionEffectPrefab, midpoint, Quaternion.identity); // 부딪힘 이펙트 생성
+        Destroy(collisionEffectInstance, 0.1f); // 0.1초 후 이펙트 삭제
+
+        // 2초 대기 (부딪힘 효과 지속 시간)
+        yield return new WaitForSeconds(2f);
+
+        // 비주얼 이펙트 삭제
+        Destroy(visualEffectInstance); // 비주얼 이펙트 삭제
 
         // 승자에 따라 쓰러지는 연출
         if (player1Card > player2Card)
         {
-            player2Zodiac.transform.Rotate(-90, 0, 0); // 플레이어 2가 쓰러짐
-            player2Zodiac.transform.position += new Vector3(0, -1, 0); // 아래로 이동
+            player2ZodiacInstance.transform.Rotate(-90, 0, 0); // 플레이어 2가 패배
+            player2ZodiacInstance.transform.position += new Vector3(0, -1, 0); // 패배자는 아래로 이동
+            Instantiate(winEffectPrefab, player1ZodiacInstance.transform.position, Quaternion.identity); // 승리 이펙트 생성
+            resultText.text = $"{PhotonNetwork.PlayerList[0].NickName} wins with {player1Card}!";
         }
         else if (player1Card < player2Card)
         {
-            player1Zodiac.transform.Rotate(-90, 0, 0); // 플레이어 1이 쓰러짐
-            player1Zodiac.transform.position += new Vector3(0, -1, 0); // 아래로 이동
+            player1ZodiacInstance.transform.Rotate(-90, 0, 0); // 플레이어 1이 패배
+            player1ZodiacInstance.transform.position += new Vector3(0, -1, 0); // 패배자는 아래로 이동
+            Instantiate(winEffectPrefab, player2ZodiacInstance.transform.position, Quaternion.identity); // 승리 이펙트 생성
+            resultText.text = $"{PhotonNetwork.PlayerList[1].NickName} wins with {player2Card}!";
+        }
+        else
+        {
+            resultText.text = "It's a tie!";
         }
 
         // 컷씬이 끝난 후 UI 활성화
-        yield return new WaitForSeconds(1f); // 쓰러짐 연출 대기
+        yield return new WaitForSeconds(5f); // 쓰러짐 연출 대기
         playerNamesText.gameObject.SetActive(true);
         winConditionText.gameObject.SetActive(true);
         player1NameText.gameObject.SetActive(true);
@@ -182,10 +169,18 @@ public class CardFight : MonoBehaviourPunCallbacks
         nextButton.gameObject.SetActive(true); // 다음 버튼 활성화
     }
 
-    private void OnClickToFightResult()
+    private IEnumerator SpawnZodiacModel(int card, Transform spawnPoint, System.Action<GameObject> onInstantiate)
     {
-        // 다음 장면으로 전환
-        SceneManager.LoadScene("FightResult");
+        // 카드에 해당하는 별자리 모델 프리팹 생성
+        if (card >= 1 && card <= zodiacPrefabs.Length)
+        {
+            GameObject instance = Instantiate(zodiacPrefabs[card - 1], spawnPoint.position, Quaternion.identity); // 카드에 해당하는 모델 생성
+            yield return null; // 프레임 대기
+            onInstantiate(instance); // 생성된 인스턴스 반환
+        }
+        else
+        {
+            Debug.LogWarning("Invalid card number: " + card);
+        }
     }
-
 }
