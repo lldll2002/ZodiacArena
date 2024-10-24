@@ -65,7 +65,8 @@ public class InputNameManager : MonoBehaviourPunCallbacks
         PlayerPrefs.SetString("NICK_NAME", nickName);
 
         // 로비 씬으로 전환
-        SceneManager.LoadScene("01_Scenes/03CardGameVR/Lobby"); // "LobbyScene"을 실제 로비 씬의 이름으로 변경하세요.
+        //SceneManager.LoadScene("01_Scenes/03CardGameVR/Lobby"); // "LobbyScene"을 실제 로비 씬의 이름으로 변경하세요.
+        SceneManager.LoadScene("01_Scenes/01Title/InputBirthday"); // "LobbyScene"을 실제 로비 씬의 이름으로 변경하세요.
     }
     #endregion
 }
