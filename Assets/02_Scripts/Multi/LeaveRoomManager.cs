@@ -20,6 +20,6 @@ public class LeaveRoomManager : MonoBehaviour
         PhotonNetwork.LeaveRoom();
         Debug.Log("Room을 떠났습니다.");
 
-        SceneManager.LoadScene("01_Scenes/03CardGameVR/Lobby");
+        SceneManager.LoadScene("01_Scenes/02CardGameVR/Lobby");
     }
 }

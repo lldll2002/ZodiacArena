@@ -77,6 +77,6 @@ public class RankingManager : MonoBehaviour
     // 로비 씬으로 이동하는 함수
     private void ReturnToLobby()
     {
-        SceneManager.LoadScene("01_Scenes/03CardGameVR/Lobby");
+        SceneManager.LoadScene("01_Scenes/02CardGameVR/Lobby");
     }
 }

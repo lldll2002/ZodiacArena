@@ -7,9 +7,12 @@ using System.Collections.Generic;
 
 public class CardSelectManager : MonoBehaviourPunCallbacks
 {
+    [Header("UI")]
     [SerializeField] private TMP_Text playerNamesText; // 플레이어 이름 표시
     [SerializeField] private TMP_Text winConditionText; // 승리 조건 표시
     [SerializeField] private TMP_Text infoText; // 안내 메시지 표시
+
+    [Header("Card Buttons")]
     [SerializeField] private Button[] cardButtons; // 카드 버튼 배열
 
     private List<int> selectedCards = new List<int>(); // 플레이어가 선택한 카드
@@ -56,7 +59,7 @@ public class CardSelectManager : MonoBehaviourPunCallbacks
         {
             int cardNumber = numbers[i];
             int buttonIndex = i; // 클로저 문제를 피하기 위해
-            //cardButtons[i].GetComponentInChildren<TMP_Text>().text = cardNumber.ToString();
+
             cardButtons[i].onClick.AddListener(() => OnCardButtonClicked(cardNumber, buttonIndex));
             cardButtons[i].gameObject.SetActive(true); // 버튼 활성화
         }

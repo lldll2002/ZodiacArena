@@ -54,7 +54,7 @@ public class RoomEnter : MonoBehaviourPunCallbacks
 
     public override void OnLeftRoom()
     {
-        SceneManager.LoadScene("01_Scenes/03CardGameVR/Lobby");
+        SceneManager.LoadScene("01_Scenes/02CardGameVR/Lobby");
     }
 
     public override void OnPlayerEnteredRoom(Photon.Realtime.Player newPlayer)

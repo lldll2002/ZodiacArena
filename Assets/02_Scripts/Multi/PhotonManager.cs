@@ -168,7 +168,7 @@ public class PhotonGameManager : MonoBehaviourPunCallbacks
         // 방장만 로딩하도록 설정
         if (PhotonNetwork.IsMasterClient)
         {
-            PhotonNetwork.LoadLevel("01_Scenes/03CardGameVR/RoomEnter");
+            PhotonNetwork.LoadLevel("01_Scenes/02CardGameVR/RoomEnter");
         }
     }
     #endregion

@@ -6,9 +6,12 @@ using System.Collections;
 
 public class BeforeGame : MonoBehaviourPunCallbacks
 {
+    [Header("UI")]
     [SerializeField] private TMP_Text resultText; // 동전 던지기 결과 텍스트
     [SerializeField] private TMP_Text selectionText; // 선택 중 플레이어 이름을 표시할 텍스트
     [SerializeField] private TMP_Text playerNamesText; // 플레이어 이름 표시할 텍스트
+
+    [Header("Select High/Low")]
     [SerializeField] private Button highButton; // 하이 선택 버튼
     [SerializeField] private Button lowButton; // 로우 선택 버튼
 
@@ -153,6 +156,6 @@ public class BeforeGame : MonoBehaviourPunCallbacks
     {
         yield return new WaitForSeconds(delay);
         // CardSelect 씬으로 이동
-        PhotonNetwork.LoadLevel("01_Scenes/03CardGameVR/CardSelect");
+        PhotonNetwork.LoadLevel("01_Scenes/02CardGameVR/CardSelect");
     }
 }

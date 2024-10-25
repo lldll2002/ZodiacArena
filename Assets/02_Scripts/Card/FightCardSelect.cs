@@ -7,12 +7,19 @@ using System.Collections;
 
 public class FightCardSelect : MonoBehaviourPunCallbacks
 {
+    [Header("CardButtons")]
     [SerializeField] private Button[] cardButtons; // 카드 버튼 배열
+
+    [Header("CardButtonText")]
     [SerializeField] private TMP_Text[] cardButtonTexts; // 카드 버튼 텍스트 배열
+
+    [Header("UI")]
     [SerializeField] private TMP_Text playerNamesText; // 플레이어 이름 표시할 텍스트
     [SerializeField] private TMP_Text winConditionText; // 승리 조건 텍스트
     [SerializeField] private TMP_Text opponentSelectionText; // 상대방 선택 상태 텍스트
     [SerializeField] private Button confirmButton; // 선택 확인 버튼
+
+    [Header("ConstellationCard")]
     [SerializeField] private Sprite[] cardSprites; // 카드 이미지 배열
 
     private int[] selectedCards;
@@ -131,6 +138,6 @@ public class FightCardSelect : MonoBehaviourPunCallbacks
     private IEnumerator LoadCardFightSceneAfterDelay(float delay)
     {
         yield return new WaitForSeconds(delay);
-        PhotonNetwork.LoadLevel("01_Scenes/03CardGameVR/CardFight");
+        PhotonNetwork.LoadLevel("01_Scenes/02CardGameVR/CardFight");
     }
 }

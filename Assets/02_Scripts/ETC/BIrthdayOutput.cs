@@ -5,12 +5,12 @@ using UnityEngine.SceneManagement;
 
 public class ZodiacSign : MonoBehaviour
 {
+    [Header("UI")]
     public TMP_InputField birthdayInput; // 생일을 입력받는 TMP_InputField
     public Button checkButton; // 생일 결정 버튼
     public Button toLobbyButton; // 로비로 이동하는 버튼
 
     [Header("Constellation Prefab")]
-    // 각 별자리에 대응하는 프리팹
     public GameObject aquariusPrefab;  // 물병자리 프리팹
     public GameObject piscesPrefab;    // 물고기자리 프리팹
     public GameObject ariesPrefab;     // 양자리 프리팹
@@ -164,6 +164,6 @@ public class ZodiacSign : MonoBehaviour
 
     void ToLobby()
     {
-        SceneManager.LoadScene("01_Scenes/03CardGameVR/Lobby"); // "LobbyScene"을 실제 로비 씬의 이름으로 변경하세요.
+        SceneManager.LoadScene("01_Scenes/02CardGameVR/Lobby"); // "LobbyScene"을 실제 로비 씬의 이름으로 변경하세요.
     }
 }

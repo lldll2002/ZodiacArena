@@ -32,8 +32,6 @@ public class CardFight : MonoBehaviourPunCallbacks
     private int player1Card; // 플레이어 1 선택한 카드
     private int player2Card; // 플레이어 2 선택한 카드
 
-    private bool hasClicked = false; // 중복 클릭 방지 변수
-
     private GameObject player1ZodiacInstance; // 플레이어 1의 별자리 모델
     private GameObject player2ZodiacInstance; // 플레이어 2의 별자리 모델
     private GameObject visualEffectInstance; // 비주얼 이펙트 인스턴스
@@ -51,7 +49,7 @@ public class CardFight : MonoBehaviourPunCallbacks
         player1CardText.gameObject.SetActive(false);
         player2CardText.gameObject.SetActive(false);
         resultText.gameObject.SetActive(false);
-        nextButton.gameObject.SetActive(false); // 다음 버튼 비활성화
+        nextButton.gameObject.SetActive(false);
 
         // 다음 버튼 클릭 이벤트 리스너 추가
         nextButton.onClick.AddListener(OnNextButtonClicked);
@@ -69,7 +67,7 @@ public class CardFight : MonoBehaviourPunCallbacks
     public override void OnLeftRoom()
     {
         // 방을 나갔을 때 FightResult 씬으로 이동
-        SceneManager.LoadScene("01_Scenes/03CardGameVR/FightResult");
+        SceneManager.LoadScene("01_Scenes/02CardGameVR/FightResult");
     }
 
     private void UpdatePlayerInfo()
