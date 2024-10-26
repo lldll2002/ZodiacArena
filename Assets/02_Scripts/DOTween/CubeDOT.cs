@@ -7,6 +7,8 @@ public class CubeDOT : MonoBehaviour
 
     public InputActionReference holdAction;
     private bool isHolding = false;
+    public float rotationSpeed = 90f; // 회전 속도 (각도/초)
+    private Tween rotationTween; // DOTween 애니메이션을 저장할 변수
 
     void Start()
     {
@@ -77,10 +79,13 @@ public class CubeDOT : MonoBehaviour
 
     private void RotateObject()
     {
-        transform.DORotate(Vector3.right, 5.0f);
+        // 현재 y축에서 지정한 각도만큼 회전
+        transform.DORotate(Vector3.right * rotationSpeed, 1f, RotateMode.LocalAxisAdd)
+                 .SetEase(Ease.Linear) // 
+                 .SetLoops(-1, LoopType.Incremental); // -1로 무한 루프
     }
 
-    private void OnDestroy()
+    private void StopRotate()
     {
         // 이벤트 등록 해제
         holdAction.action.performed -= ctx => StartHold();
