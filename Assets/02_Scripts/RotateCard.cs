@@ -6,7 +6,6 @@ public class RotateCard : MonoBehaviour
     public InputActionReference dragAction;
 
 
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         dragAction.action.Enable();
@@ -17,7 +16,6 @@ public class RotateCard : MonoBehaviour
         };
     }
 
-    // Update is called once per frame
     void LateUpdate()
     {
 
