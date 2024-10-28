@@ -28,6 +28,25 @@ public class FightCutScene : MonoBehaviourPunCallbacks
 
     void Start()
     {
+        UpdatePlayerInfo();
+
+    }
+
+
+    private void UpdatePlayerInfo()
+    {
+        // 카드 정보를 CustomProperties에서 가져와서 업데이트
+        if (PhotonNetwork.PlayerList.Length > 0 && PhotonNetwork.PlayerList[0].CustomProperties.ContainsKey("selectedCard"))
+        {
+            player1Card = (int)PhotonNetwork.PlayerList[0].CustomProperties["selectedCard"];
+        }
+
+        if (PhotonNetwork.PlayerList.Length > 1 && PhotonNetwork.PlayerList[1].CustomProperties.ContainsKey("selectedCard"))
+        {
+            player2Card = (int)PhotonNetwork.PlayerList[1].CustomProperties["selectedCard"];
+        }
+
+        // 카드 정보가 업데이트되었을 때 애니메이션 시작
         StartCoroutine(ModelTransform());
     }
 
