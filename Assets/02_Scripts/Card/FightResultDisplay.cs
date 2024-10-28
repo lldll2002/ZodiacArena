@@ -11,8 +11,9 @@ public class FightResultManager : MonoBehaviour
 {
     [SerializeField] private TMP_Text resultText; // 승리 결과 표시 텍스트
     private int winCount; // 현재 승리 횟수 저장
-    private GameObject winnerEffect; // 승자 이펙트를 인스펙터에 연결할 변수 
-    private GameObject loserEffect; // 패자 이펙트를 인스펙터에 연결할 변수 
+
+    [SerializeField] private GameObject winnerEffect; // 승자 이펙트를 인스펙터에 연결할 변수 
+    [SerializeField] private GameObject loserEffect; // 패자 이펙트를 인스펙터에 연결할 변수 
 
     [SerializeField] private Transform EffectSpawnPoint;
 

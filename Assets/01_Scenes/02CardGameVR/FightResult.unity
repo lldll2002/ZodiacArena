@@ -1616,6 +1616,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   resultText: {fileID: 596145001}
+  winnerEffect: {fileID: 2384046038172167151, guid: 9e41d23cf1444c24a8b17240ce854043, type: 3}
+  loserEffect: {fileID: 806841788190176353, guid: 6bef9e6a065a7ce4f90612d5a3b8640a, type: 3}
+  EffectSpawnPoint: {fileID: 1630515361}
 --- !u!1 &1467825282
 GameObject:
   m_ObjectHideFlags: 0
@@ -1647,6 +1650,68 @@ Transform:
   m_Children: []
   m_Father: {fileID: 619659246}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1001 &1630515360
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 2904747209096416888, guid: afbd9683d4155cc4889633509c3cca00, type: 3}
+      propertyPath: m_Name
+      value: Colosseum_Point_1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4062867355930721046, guid: afbd9683d4155cc4889633509c3cca00, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -1.0755911
+      objectReference: {fileID: 0}
+    - target: {fileID: 4062867355930721046, guid: afbd9683d4155cc4889633509c3cca00, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4062867355930721046, guid: afbd9683d4155cc4889633509c3cca00, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 1.23
+      objectReference: {fileID: 0}
+    - target: {fileID: 4062867355930721046, guid: afbd9683d4155cc4889633509c3cca00, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4062867355930721046, guid: afbd9683d4155cc4889633509c3cca00, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4062867355930721046, guid: afbd9683d4155cc4889633509c3cca00, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4062867355930721046, guid: afbd9683d4155cc4889633509c3cca00, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4062867355930721046, guid: afbd9683d4155cc4889633509c3cca00, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4062867355930721046, guid: afbd9683d4155cc4889633509c3cca00, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4062867355930721046, guid: afbd9683d4155cc4889633509c3cca00, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: afbd9683d4155cc4889633509c3cca00, type: 3}
+--- !u!4 &1630515361 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 4062867355930721046, guid: afbd9683d4155cc4889633509c3cca00, type: 3}
+  m_PrefabInstance: {fileID: 1630515360}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &1651607298
 Transform:
   m_ObjectHideFlags: 0
@@ -3133,7 +3198,7 @@ Transform:
   m_GameObject: {fileID: 1717954560124206655}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: -1.43, z: -2.8}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -8581,3 +8646,4 @@ SceneRoots:
   - {fileID: 34289143}
   - {fileID: 1049290451}
   - {fileID: 1370854801}
+  - {fileID: 1630515360}
