@@ -11,35 +11,62 @@ public class FightResultManager : MonoBehaviour
 {
     [SerializeField] private TMP_Text resultText; // 승리 결과 표시 텍스트
     private int winCount; // 현재 승리 횟수 저장
+    private GameObject winnerEffect; // 승자 이펙트를 인스펙터에 연결할 변수 
+    private GameObject loserEffect; // 패자 이펙트를 인스펙터에 연결할 변수 
+
+    private enum GameState { win, Lose, Draw }
+    private GameState currentState;
+
 
     async void Start()
     {
+
         // Unity 서비스 초기화
         await UnityServices.InitializeAsync();
 
         // PlayerPrefs에서 플레이어 승리 여부를 가져옴
         int playerWon = PlayerPrefs.GetInt("PlayerWon", -1); // 기본값 -1로 설정
 
+        #region 승리/패배 효과 + 모델 구현
         // 플레이어가 이겼을 경우 메시지 표시 및 승리 횟수 업데이트
         if (playerWon == 1)
         {
             resultText.text = "You win!";
+            Instantiate(winnerEffect, transform.position, Quaternion.identity);
             await UpdateWinCount(); // 승리 횟수 업데이트
         }
         else if (playerWon == 0)
         {
             resultText.text = "You lost!";
+            Instantiate(loserEffect, transform.position, Quaternion.identity);
         }
         else
         {
             resultText.text = "It's a tie!";
         }
 
+        // 승패에 따른 이펙트 실행
+        ShowEffect();
+
+        #endregion
+
         // 플레이어 닉네임 불러오기
         await LoadPlayerNickName();
 
         // 3초 후에 Ranking 씬으로 넘어가기
         Invoke("LoadRankingScene", 3f);
+    }
+
+    private void ShowEffect()
+    {
+        if (currentState == GameState.win && winnerEffect != null)
+        {
+            Instantiate(winnerEffect, transform.position, Quaternion.identity);
+        }
+        else if (currentState == GameState.Lose && loserEffect != null)
+        {
+            Instantiate(loserEffect, transform.position, Quaternion.identity);
+        }
     }
 
     private async Task LoadPlayerNickName()
