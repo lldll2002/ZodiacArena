@@ -1318,6 +1318,54 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 619659245}
   m_CullTransparentMesh: 1
+--- !u!1 &682247934
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 682247936}
+  - component: {fileID: 682247937}
+  m_Layer: 0
+  m_Name: Test
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &682247936
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 682247934}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &682247937
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 682247934}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b714464bbf9c56447ace07d9fdeb12ea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerWon: 0
+  winnerEffect: {fileID: 2384046038172167151, guid: 9e41d23cf1444c24a8b17240ce854043, type: 3}
+  loserEffect: {fileID: 806841788190176353, guid: 6bef9e6a065a7ce4f90612d5a3b8640a, type: 3}
+  EffectSpawnPoint: {fileID: 1630515361}
 --- !u!1 &923115012
 GameObject:
   m_ObjectHideFlags: 0
@@ -1587,7 +1635,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1370854801
 Transform:
   m_ObjectHideFlags: 0
@@ -8646,4 +8694,5 @@ SceneRoots:
   - {fileID: 34289143}
   - {fileID: 1049290451}
   - {fileID: 1370854801}
+  - {fileID: 682247936}
   - {fileID: 1630515360}
