@@ -799,7 +799,7 @@ MonoBehaviour:
   spawnPoint: {fileID: 2124306313}
   xrOrigin: {fileID: 1717954562252561098}
   lobby: {fileID: 1301143809}
-  narrationClip: {fileID: 8300000, guid: ea47e8694cebd7c43ab03fba3aa0768f, type: 3}
+  narrationClip: {fileID: 8300000, guid: f6af426e56c635441941695338934e25, type: 3}
   moveDuration: 5
   waitDuration: 1
   rotationDuration: 10
@@ -2182,8 +2182,8 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 0}
-  m_Resource: {fileID: 0}
+  m_audioClip: {fileID: 8300000, guid: 7976a6467ff124bddb632ca0cbd1ab14, type: 3}
+  m_Resource: {fileID: 8300000, guid: 7976a6467ff124bddb632ca0cbd1ab14, type: 3}
   m_PlayOnAwake: 1
   m_Volume: 0.5
   m_Pitch: 1
