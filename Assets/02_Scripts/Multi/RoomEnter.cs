@@ -68,6 +68,6 @@ public class RoomEnter : MonoBehaviourPunCallbacks
 
     private void LoadCoinFlipScene()
     {
-        SceneManager.LoadScene("01_Scenes/03CardGameVR/CoinFlip"); // CoinFlip 씬으로 전환
+        SceneManager.LoadScene("01_Scenes/02CardGameVR/CoinFlip"); // CoinFlip 씬으로 전환
     }
 }
