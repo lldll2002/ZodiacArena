@@ -799,7 +799,7 @@ MonoBehaviour:
   spawnPoint: {fileID: 2124306313}
   xrOrigin: {fileID: 1717954562252561098}
   lobby: {fileID: 1301143809}
-  narrationClip: {fileID: 8300000, guid: ea47e8694cebd7c43ab03fba3aa0768f, type: 3}
+  narrationClip: {fileID: 8300000, guid: f6af426e56c635441941695338934e25, type: 3}
   moveDuration: 5
   waitDuration: 1
   rotationDuration: 10
