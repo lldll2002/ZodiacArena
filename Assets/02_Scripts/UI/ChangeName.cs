@@ -15,14 +15,25 @@ public class ChangeName : MonoBehaviour
     void Start()
     {
         // PlayerPrefs에서 저장된 닉네임 가져오기
-        string existingNickName = PlayerPrefs.GetString("NICK_NAME", "익명"); // 기본값은 "익명"
+        string existingNickName = PlayerPrefs.GetString("NICK_NAME", "");
 
-        // 메시지 설정
-        Info.text = $"Do you want to change your name from {existingNickName}?";
+        // 저장된 닉네임이 없으면 InputName 씬으로 이동
+        if (string.IsNullOrEmpty(existingNickName))
+        {
+            SceneManager.LoadScene("01_Scenes/01Title/InputName");
+        }
+        else
+        {
+            // 저장된 닉네임을 Nick_Name 변수에 저장
+            PlayerPrefs.SetString("Nick_Name", existingNickName);
 
-        // 버튼 이벤트 연결
-        yesButton.onClick.AddListener(OnYesButtonClick);
-        noButton.onClick.AddListener(OnNoButtonClick);
+            // 메시지 설정
+            Info.text = $"Do you want to change your name from {existingNickName}?";
+
+            // 버튼 이벤트 연결
+            yesButton.onClick.AddListener(OnYesButtonClick);
+            noButton.onClick.AddListener(OnNoButtonClick);
+        }
     }
 
     void OnYesButtonClick()
