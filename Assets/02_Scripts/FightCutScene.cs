@@ -17,7 +17,6 @@ public class FightCutScene : MonoBehaviourPunCallbacks
     [SerializeField] private GameObject visualEffectPrefab;
     [SerializeField] private GameObject collisionEffectPrefab;
     [SerializeField] private GameObject winEffectPrefab;
-    // [SerializeField] private GameObject 
 
     private int player1Card;
     private int player2Card;
@@ -29,9 +28,7 @@ public class FightCutScene : MonoBehaviourPunCallbacks
     void Start()
     {
         UpdatePlayerInfo();
-
     }
-
 
     private void UpdatePlayerInfo()
     {
@@ -81,7 +78,6 @@ public class FightCutScene : MonoBehaviourPunCallbacks
         // 부딪힘 효과(shake)
         player1ZodiacInstance.transform.DOShakePosition(0.5f, 1, 10, 50, false, false);
         player2ZodiacInstance.transform.DOShakePosition(0.5f, 1, 10, 50, false, false);
-        // yield return new WaitForSeconds(1.5f);
 
         GameObject collisionEffectInstance = Instantiate(collisionEffectPrefab, midpoint, Quaternion.identity);
         Destroy(collisionEffectInstance, 0.1f);
@@ -93,6 +89,10 @@ public class FightCutScene : MonoBehaviourPunCallbacks
         Destroy(player1ZodiacInstance);
         Destroy(player2ZodiacInstance);
         Destroy(visualEffectInstance);
+
+        // 승리 여부를 PlayerPrefs에 저장 (player1Card가 더 크면 player1Wins)
+        PlayerPrefs.SetInt("PlayerWon", player1Card > player2Card ? 1 : (player1Card < player2Card ? 0 : -1));
+        PlayerPrefs.Save(); // 데이터를 즉시 저장
 
         // 컷씬이 끝난 후 방 나가기 및 다음 씬으로 이동
         PhotonNetwork.LeaveRoom();
