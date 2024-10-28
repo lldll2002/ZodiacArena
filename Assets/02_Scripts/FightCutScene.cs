@@ -28,7 +28,13 @@ public class FightCutScene : MonoBehaviourPunCallbacks
     void Start()
     {
         UpdatePlayerInfo();
+
+        // 승리 조건을 PlayerPrefs에서 불러오기
+        string winCondition = PlayerPrefs.GetString("WinCondition", "DefaultCondition");
+
     }
+
+
 
     private void UpdatePlayerInfo()
     {
@@ -111,7 +117,7 @@ public class FightCutScene : MonoBehaviourPunCallbacks
     public override void OnLeftRoom()
     {
         // 방을 나갔을 때 FightResult 씬으로 이동
-        SceneManager.LoadScene("01_Scenes/02CardGameVR/FightResult_Temp");
+        SceneManager.LoadScene("01_Scenes/02CardGameVR/FightResult");
     }
 
     private GameObject SpawnZodiacModel(int card, Transform spawnPoint)

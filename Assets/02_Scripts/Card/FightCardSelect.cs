@@ -67,9 +67,15 @@ public class FightCardSelect : MonoBehaviourPunCallbacks
         // 플레이어 이름 표시
         UpdatePlayerNames();
 
+        // 승리 조건을 PlayerPrefs에서 불러오기
+        string winCondition = PlayerPrefs.GetString("WinCondition", "DefaultCondition");
+        UpdateWinConditionText(winCondition);
+
         // 선택 확인 버튼 클릭 이벤트 추가
         confirmButton.onClick.AddListener(ConfirmSelection);
     }
+
+
 
     private void UpdatePlayerNames()
     {
@@ -78,6 +84,11 @@ public class FightCardSelect : MonoBehaviourPunCallbacks
             : PhotonNetwork.PlayerList[0].NickName;
 
         playerNamesText.text = $"{PhotonNetwork.LocalPlayer.NickName} vs. {otherPlayerNickName}";
+    }
+
+    private void UpdateWinConditionText(string winCondition)
+    {
+        winConditionText.text = $"승리 조건: {winCondition}";
     }
 
     private void SelectCard(int cardValue)

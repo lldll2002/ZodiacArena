@@ -20,8 +20,15 @@ public class CardSelectManager : MonoBehaviourPunCallbacks
 
     private void Start()
     {
+
+        // 승리 조건을 PlayerPrefs에서 불러오기
+        string winCondition = PlayerPrefs.GetString("WinCondition", "DefaultCondition");
+
+        // 불러온 승리 조건에 따라 게임 로직을 구현
+        Debug.Log($"Win condition retrieved: {winCondition}");
+
         UpdatePlayerNames();
-        UpdateWinConditionText();
+        UpdateWinConditionText(winCondition);
         ShuffleCardButtons();
 
         infoText.text = "카드를 3장 선택하세요.";
@@ -37,10 +44,8 @@ public class CardSelectManager : MonoBehaviourPunCallbacks
         playerNamesText.text = $"{PhotonNetwork.LocalPlayer.NickName} vs. {otherPlayerNickName}";
     }
 
-    private void UpdateWinConditionText()
+    private void UpdateWinConditionText(string winCondition)
     {
-        // 승리 조건 표시 (예시: "High")
-        string winCondition = "High"; // 여기에 실제 CoinFlip 결과를 가져오는 로직 추가
         winConditionText.text = $"승리 조건: {winCondition}";
     }
 

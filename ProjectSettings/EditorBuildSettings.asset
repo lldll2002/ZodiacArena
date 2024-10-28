@@ -42,17 +42,11 @@ EditorBuildSettings:
     path: Assets/01_Scenes/02CardGameVR/FightCutScene.unity
     guid: d4c1ad4bf39d5944096602ea41e97eeb
   - enabled: 1
-    path: Assets/01_Scenes/02CardGameVR/CardFight.unity
-    guid: e953fd0b2f7e47244aa4fa90371fb53b
-  - enabled: 1
     path: Assets/01_Scenes/02CardGameVR/FightResult.unity
     guid: 64772696a284266428d4c1ad083e437d
   - enabled: 1
     path: Assets/01_Scenes/02CardGameVR/Ranking.unity
     guid: 5a71bd520f703af498690a54334fc4d5
-  - enabled: 1
-    path: Assets/01_Scenes/04_Colosseum_Win_Loser/VR_Test.unity
-    guid: e38e0c7dfe290ff44b4388f31403a04e
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 052faaac586de48259a63d0c4782560b, type: 3}
     com.unity.xr.management.loader_settings: {fileID: 11400000, guid: fd062a9786efda14c9e61b42e269dfdb, type: 2}

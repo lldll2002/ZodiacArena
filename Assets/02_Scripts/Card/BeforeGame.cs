@@ -126,6 +126,10 @@ public class BeforeGame : MonoBehaviourPunCallbacks
         // 승리 조건을 다른 플레이어에게 전파
         photonView.RPC("NotifyWinCondition", RpcTarget.All, condition);
 
+        // 승리 조건을 PlayerPrefs에 저장 (여기서는 선택한 플레이어만 저장)
+        PlayerPrefs.SetString("WinCondition", condition);
+        PlayerPrefs.Save(); // 변경 사항 저장
+
         // 버튼 비활성화
         highButton.gameObject.SetActive(false);
         lowButton.gameObject.SetActive(false);
@@ -136,6 +140,8 @@ public class BeforeGame : MonoBehaviourPunCallbacks
         // 모든 플레이어가 선택했는지를 확인
         StartCoroutine(LoadCardSelectAfterDelay(3f)); // 3초 대기 후 CardSelect 씬으로 이동
     }
+
+
 
     [PunRPC]
     private void NotifyWinCondition(string condition, PhotonMessageInfo info)
