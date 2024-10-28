@@ -75,8 +75,6 @@ public class FightCardSelect : MonoBehaviourPunCallbacks
         confirmButton.onClick.AddListener(ConfirmSelection);
     }
 
-
-
     private void UpdatePlayerNames()
     {
         string otherPlayerNickName = PhotonNetwork.PlayerList[0].NickName == PhotonNetwork.LocalPlayer.NickName
@@ -95,9 +93,27 @@ public class FightCardSelect : MonoBehaviourPunCallbacks
     {
         if (canSelectCard) // 카드 선택이 가능한 경우
         {
+            // 이전에 선택한 카드가 있다면 비활성화
+            if (selectedCard.HasValue)
+            {
+                int previousCardIndex = System.Array.IndexOf(selectedCards, selectedCard.Value);
+                if (previousCardIndex >= 0)
+                {
+                    cardButtons[previousCardIndex].interactable = true; // 이전 카드 버튼 활성화
+                }
+            }
+
+            // 새 카드 선택 및 비활성화
             selectedCard = cardValue; // 선택된 카드 저장
             winConditionText.text = $"Selected Card: {selectedCard}"; // 승리 조건 텍스트 업데이트
             Debug.Log($"Selected Card: {selectedCard}");
+
+            // 새로 선택된 카드 버튼 비활성화
+            int newCardIndex = System.Array.IndexOf(selectedCards, selectedCard.Value);
+            if (newCardIndex >= 0)
+            {
+                cardButtons[newCardIndex].interactable = false; // 새 카드 버튼 비활성화
+            }
         }
     }
 
