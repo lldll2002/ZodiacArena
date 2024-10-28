@@ -164,6 +164,6 @@ public class ZodiacSign : MonoBehaviour
 
     void ToLobby()
     {
-        SceneManager.LoadScene("01_Scenes/02CardGameVR/Lobby"); // "LobbyScene"을 실제 로비 씬의 이름으로 변경하세요.
+        SceneManager.LoadScene("01_Scenes/02CardGameVR/Lobby_Cutscene"); // "LobbyScene"을 실제 로비 씬의 이름으로 변경하세요.
     }
 }

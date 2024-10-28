@@ -61,7 +61,7 @@ public class PhotonGameManager : MonoBehaviourPunCallbacks
         }
 
         // UI에 닉네임 업데이트
-        nickNameText.text = nickName; // 닉네임 표시
+        nickNameText.text = $"Welcome {nickName}!"; // 닉네임 표시
 
         // 버튼 이벤트 연결
         enterRoomButton.onClick.AddListener(() => OnLoginButtonClick());

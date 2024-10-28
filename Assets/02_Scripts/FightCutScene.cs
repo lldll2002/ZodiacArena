@@ -49,6 +49,11 @@ public class FightCutScene : MonoBehaviourPunCallbacks
 
     private IEnumerator ModelTransform()
     {
+        // 1번 플레이어 이펙트 소환
+        visualEffectInstance = Instantiate(visualEffectPrefab, player1SpawnPoint.position, Quaternion.identity);
+        Destroy(visualEffectInstance, 1.0f); // 이펙트를 1초 후에 삭제
+        yield return new WaitForSeconds(0.5f); // 약간의 지연 후 모델 소환
+
         // 1번 플레이어의 별자리 모델 소환
         player1ZodiacInstance = SpawnZodiacModel(player1Card, player1SpawnPoint);
         if (player1ZodiacInstance != null)
@@ -58,6 +63,11 @@ public class FightCutScene : MonoBehaviourPunCallbacks
             yield return player1ZodiacInstance.transform.DORotate(new Vector3(0, 540, 0), 2.0f, RotateMode.FastBeyond360)
                 .SetEase(Ease.Linear).WaitForCompletion();
         }
+
+        // 2번 플레이어 이펙트 소환
+        visualEffectInstance = Instantiate(visualEffectPrefab, player2SpawnPoint.position, Quaternion.identity);
+        Destroy(visualEffectInstance, 1.0f);
+        yield return new WaitForSeconds(0.5f);
 
         // 2번 플레이어의 별자리 모델 소환
         player2ZodiacInstance = SpawnZodiacModel(player2Card, player2SpawnPoint);
@@ -101,7 +111,7 @@ public class FightCutScene : MonoBehaviourPunCallbacks
     public override void OnLeftRoom()
     {
         // 방을 나갔을 때 FightResult 씬으로 이동
-        SceneManager.LoadScene("01_Scenes/02CardGameVR/FightResult");
+        SceneManager.LoadScene("01_Scenes/02CardGameVR/FightResult_Temp");
     }
 
     private GameObject SpawnZodiacModel(int card, Transform spawnPoint)
