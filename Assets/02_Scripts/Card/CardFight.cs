@@ -100,6 +100,7 @@ public class CardFight : MonoBehaviourPunCallbacks
             : "High"; // 기본값 설정
     }
 
+    #region Dotween으로 변경 필요 부분.
     private IEnumerator PlayCutscene()
     {
         // 플레이어 1의 카드 모델 생성 및 비주얼 이펙트 실행
@@ -166,6 +167,7 @@ public class CardFight : MonoBehaviourPunCallbacks
         resultText.gameObject.SetActive(true);
         nextButton.gameObject.SetActive(true); // 다음 버튼 활성화
     }
+    #endregion
 
     private IEnumerator SpawnZodiacModel(int card, Transform spawnPoint, System.Action<GameObject> onInstantiate)
     {

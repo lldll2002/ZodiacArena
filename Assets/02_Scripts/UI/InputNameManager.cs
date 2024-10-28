@@ -1,72 +1,50 @@
-using System.Collections.Generic;
-using Photon.Pun;
-using Photon.Realtime;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
-using UnityEngine.SceneManagement; // 추가된 부분
+using UnityEngine.SceneManagement;
 
-public class InputNameManager : MonoBehaviourPunCallbacks
+public class InputNameManager : MonoBehaviour
 {
     #region Settings
     [Header("UI")]
     [SerializeField] private TMP_InputField nickNameIf;
 
     [Header("Button")]
-    [SerializeField] private Button enterLobbyButton;
+    [SerializeField] private Button enterButton; // 확인 버튼
     #endregion
 
-    private string nickName; // 여기에 닉네임 변수를 추가합니다.
-    private LoginManager loginManager;
+    private string nickName;
 
     //---------------------------------------------------------
     #region Awake & Start
 
     void Start()
     {
-        // LoginManager를 찾아서 저장
-        loginManager = FindObjectOfType<LoginManager>();
-
+        // PlayerPrefs에서 저장된 닉네임이 있는지 확인
         if (PlayerPrefs.HasKey("NICK_NAME"))
         {
             nickName = PlayerPrefs.GetString("NICK_NAME");
-            nickNameIf.text = nickName;
+            // 닉네임을 InputField에 설정하지 않음
         }
 
-        SetNickName();
-
         // 버튼 이벤트 연결
-        enterLobbyButton.onClick.AddListener(() => OnLoginButtonClick());
+        enterButton.onClick.AddListener(OnEnterButtonClick);
     }
     #endregion
 
     //---------------------------------------------------------
-    #region Nickname & Login
-    private void SetNickName()
+    #region Nickname Handling
+    public void OnEnterButtonClick()
     {
-        // 닉네임이 비어 있는지 확인
-        if (string.IsNullOrEmpty(nickNameIf.text))
+        // 닉네임이 비어있지 않은지 확인
+        if (!string.IsNullOrEmpty(nickNameIf.text))
         {
-            nickName = $"USER_{Random.Range(0, 1000):0000}";
-            nickNameIf.text = nickName;
+            nickName = nickNameIf.text;
+            PlayerPrefs.SetString("NICK_NAME", nickName); // 입력된 닉네임을 PlayerPrefs에 저장
         }
 
-        nickName = nickNameIf.text;
-        PhotonNetwork.NickName = nickName;
-
-        // 닉네임을 Cloud Save에 업데이트
-        loginManager?.UpdatePlayerNickName(nickName);
-    }
-
-    public void OnLoginButtonClick()
-    {
-        SetNickName();
-
-        PlayerPrefs.SetString("NICK_NAME", nickName);
-
-        // 로비 씬으로 전환
-        //SceneManager.LoadScene("01_Scenes/03CardGameVR/Lobby"); // "LobbyScene"을 실제 로비 씬의 이름으로 변경하세요.
-        SceneManager.LoadScene("01_Scenes/01Title/InputBirthday"); // "LobbyScene"을 실제 로비 씬의 이름으로 변경하세요.
+        // 이후 로비 씬으로 전환
+        SceneManager.LoadScene("01_Scenes/01Title/InputBirthday"); // 다음 씬으로 전환
     }
     #endregion
 }
