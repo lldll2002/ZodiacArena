@@ -138,6 +138,6 @@ public class FightCardSelect : MonoBehaviourPunCallbacks
     private IEnumerator LoadCardFightSceneAfterDelay(float delay)
     {
         yield return new WaitForSeconds(delay);
-        PhotonNetwork.LoadLevel("01_Scenes/02CardGameVR/ROTATEFIGHT");
+        PhotonNetwork.LoadLevel("01_Scenes/02CardGameVR/FightCutScene");
     }
 }

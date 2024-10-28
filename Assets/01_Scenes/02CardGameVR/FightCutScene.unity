@@ -1625,7 +1625,7 @@ GameObject:
   - component: {fileID: 1944968887}
   - component: {fileID: 1944968888}
   m_Layer: 0
-  m_Name: DOTRotationManager
+  m_Name: FightCutSceneManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
