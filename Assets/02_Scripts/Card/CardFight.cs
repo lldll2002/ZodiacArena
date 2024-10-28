@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement; // SceneManager를 사용하기 위해 추가
 using UnityEngine.UI; // Button 사용을 위해 추가
 using System.Collections; // IEnumerator 사용을 위해 추가
+using DG.Tweening;
 
 public class CardFight : MonoBehaviourPunCallbacks
 {
@@ -112,6 +113,8 @@ public class CardFight : MonoBehaviourPunCallbacks
 
         // 비주얼 이펙트 생성 (부딪히기 전)
         visualEffectInstance = Instantiate(visualEffectPrefab, (player1ZodiacInstance.transform.position + player2ZodiacInstance.transform.position) / 2, Quaternion.identity);
+        // 생성된 visualEffectInstance에 회전 애니메이션 적용
+        visualEffectInstance.transform.DORotate(new Vector3(0, 1080, 0), 1.5f, RotateMode.FastBeyond360);
 
         // 두 모델이 중간 지점으로 이동
         Vector3 midpoint = (player1ZodiacInstance.transform.position + player2ZodiacInstance.transform.position) / 2;

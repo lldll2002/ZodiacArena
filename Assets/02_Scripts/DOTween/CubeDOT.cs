@@ -47,48 +47,49 @@ public class CubeDOT : MonoBehaviour
 
         // transform.DORotate(Vector3.up, 5f, RotateMode.FastBeyond360);
 
+        transform.DORotate(new Vector3(0, 1080, 0), 1.5f, RotateMode.FastBeyond360);
 
-        holdAction.action.Enable();
+        // holdAction.action.Enable();
 
-        holdAction.action.performed += ctx =>
-        {
-            StartHold();
-            Debug.Log(ctx.ToString());
-        };
+        // holdAction.action.performed += ctx =>
+        // {
+        //     StartHold();
+        //     Debug.Log(ctx.ToString());
+        // };
 
-        holdAction.action.performed += ctx => StopHold();
+        // holdAction.action.performed += ctx => StopHold();
     }
 
-    void Update()
-    {
-        if (isHolding)
-        {
-            RotateObject();
-        }
-    }
+    // void Update()
+    // {
+    //     if (isHolding)
+    //     {
+    //         RotateObject();
+    //     }
+    // }
 
-    private void StartHold()
-    {
-        isHolding = true;
-    }
+    // private void StartHold()
+    // {
+    //     isHolding = true;
+    // }
 
-    private void StopHold()
-    {
-        isHolding = false;
-    }
+    // private void StopHold()
+    // {
+    //     isHolding = false;
+    // }
 
-    private void RotateObject()
-    {
-        // 현재 y축에서 지정한 각도만큼 회전
-        transform.DORotate(Vector3.right * rotationSpeed, 1f, RotateMode.LocalAxisAdd)
-                 .SetEase(Ease.Linear) // 
-                 .SetLoops(-1, LoopType.Incremental); // -1로 무한 루프
-    }
+    // private void RotateObject()
+    // {
+    //     // 현재 y축에서 지정한 각도만큼 회전
+    //     transform.DORotate(Vector3.right * rotationSpeed, 1f, RotateMode.LocalAxisAdd)
+    //              .SetEase(Ease.Linear) // 
+    //              .SetLoops(-1, LoopType.Incremental); // -1로 무한 루프
+    // }
 
-    private void StopRotate()
-    {
-        // 이벤트 등록 해제
-        holdAction.action.performed -= ctx => StartHold();
-        holdAction.action.canceled -= ctx => StopHold();
-    }
+    // private void StopRotate()
+    // {
+    //     // 이벤트 등록 해제
+    //     holdAction.action.performed -= ctx => StartHold();
+    //     holdAction.action.canceled -= ctx => StopHold();
+    // }
 }
