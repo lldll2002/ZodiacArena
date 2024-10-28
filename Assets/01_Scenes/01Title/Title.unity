@@ -1426,7 +1426,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8bc0232a41dd93c479293e830c7a9fa4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  buttonClickSound: {fileID: 8300000, guid: b092c9a11ac473f4390e9e6ca44817d9, type: 3}
+  buttonClickSound: {fileID: 8300000, guid: e0eae0ff82f67b54cacffa220182a141, type: 3}
 --- !u!4 &365099974
 Transform:
   m_ObjectHideFlags: 0
@@ -1838,7 +1838,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1115538496}
   m_Layer: 0
-  m_Name: =====Music=================
+  m_Name: =====Sound=================
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

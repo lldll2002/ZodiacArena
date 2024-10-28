@@ -2050,7 +2050,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8bc0232a41dd93c479293e830c7a9fa4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  buttonClickSound: {fileID: 8300000, guid: b092c9a11ac473f4390e9e6ca44817d9, type: 3}
+  buttonClickSound: {fileID: 8300000, guid: 79e2d11d04517f24bb3036b22d9c824c, type: 3}
 --- !u!4 &1099398745
 Transform:
   m_ObjectHideFlags: 0
