@@ -14,8 +14,9 @@ public class FightResultManager : MonoBehaviour
     private GameObject winnerEffect; // 승자 이펙트를 인스펙터에 연결할 변수 
     private GameObject loserEffect; // 패자 이펙트를 인스펙터에 연결할 변수 
 
-    private enum GameState { win, Lose, Draw }
-    private GameState currentState;
+    [SerializeField] private Transform EffectSpawnPoint;
+
+
 
 
     async void Start()
@@ -26,19 +27,21 @@ public class FightResultManager : MonoBehaviour
 
         // PlayerPrefs에서 플레이어 승리 여부를 가져옴
         int playerWon = PlayerPrefs.GetInt("PlayerWon", -1); // 기본값 -1로 설정
+        Debug.Log($"{playerWon}");
+
 
         #region 승리/패배 효과 + 모델 구현
         // 플레이어가 이겼을 경우 메시지 표시 및 승리 횟수 업데이트
         if (playerWon == 1)
         {
             resultText.text = "You win!";
-            Instantiate(winnerEffect, transform.position, Quaternion.identity);
+            Instantiate(winnerEffect, EffectSpawnPoint);
             await UpdateWinCount(); // 승리 횟수 업데이트
         }
         else if (playerWon == 0)
         {
             resultText.text = "You lost!";
-            Instantiate(loserEffect, transform.position, Quaternion.identity);
+            Instantiate(loserEffect, EffectSpawnPoint);
         }
         else
         {
@@ -46,7 +49,7 @@ public class FightResultManager : MonoBehaviour
         }
 
         // 승패에 따른 이펙트 실행
-        ShowEffect();
+        //ShowEffect();
 
         #endregion
 
@@ -56,6 +59,8 @@ public class FightResultManager : MonoBehaviour
         // 3초 후에 Ranking 씬으로 넘어가기
         Invoke("LoadRankingScene", 3f);
     }
+
+    /*
 
     private void ShowEffect()
     {
@@ -68,6 +73,8 @@ public class FightResultManager : MonoBehaviour
             Instantiate(loserEffect, transform.position, Quaternion.identity);
         }
     }
+
+    */
 
     private async Task LoadPlayerNickName()
     {
