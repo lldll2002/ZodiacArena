@@ -24,8 +24,7 @@ public class PhotonGameManager : MonoBehaviourPunCallbacks
     //=============================================================
     // 3. 룸 만들기
     [Header("Room")]
-    [SerializeField] private TMP_InputField roomNameIf;
-    [SerializeField] private Button makeRoomButton;
+    [SerializeField] private Button makeRoomButton; // 룸 만들기 버튼
 
     #endregion
 
@@ -103,11 +102,8 @@ public class PhotonGameManager : MonoBehaviourPunCallbacks
         // 닉네임 여부 확인
         SetNickName();
 
-        // 룸 이름 입력 여부 확인
-        if (string.IsNullOrEmpty(roomNameIf.text))
-        {
-            roomNameIf.text = $"ROOM_{Random.Range(0, 1000):0000}";
-        }
+        // 룸 이름 자동 생성
+        string roomName = $"ROOM_{Random.Range(0, 1000):0000}";
 
         // 룸 속성을 정의
         RoomOptions ro = new RoomOptions
@@ -118,7 +114,7 @@ public class PhotonGameManager : MonoBehaviourPunCallbacks
         };
 
         // 룸 생성
-        PhotonNetwork.CreateRoom(roomNameIf.text, ro);
+        PhotonNetwork.CreateRoom(roomName, ro);
     }
     #endregion
 

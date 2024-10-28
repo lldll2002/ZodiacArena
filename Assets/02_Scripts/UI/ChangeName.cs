@@ -2,6 +2,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement; // 씬 전환을 위한 추가
+using System.Collections; // 코루틴을 위한 추가
 
 public class ChangeName : MonoBehaviour
 {
@@ -31,23 +32,26 @@ public class ChangeName : MonoBehaviour
             Info.text = $"Do you want to change your name from {existingNickName}?";
 
             // 버튼 이벤트 연결
-            yesButton.onClick.AddListener(OnYesButtonClick);
-            noButton.onClick.AddListener(OnNoButtonClick);
+            yesButton.onClick.AddListener(() => StartCoroutine(OnYesButtonClick()));
+            noButton.onClick.AddListener(() => StartCoroutine(OnNoButtonClick()));
         }
     }
 
-    void OnYesButtonClick()
+    IEnumerator OnYesButtonClick()
     {
+        // 1초 동안 대기
+        yield return new WaitForSeconds(1f);
+
         // InputName 씬으로 이동
         SceneManager.LoadScene("01_Scenes/01Title/InputName");
     }
 
-    void OnNoButtonClick()
+    IEnumerator OnNoButtonClick()
     {
-        // 익명 로그인 처리 및 Lobby 씬으로 이동
-        // 여기서 익명 로그인 처리 로직을 추가
-        // ...
+        // 1초 동안 대기
+        yield return new WaitForSeconds(1f);
 
-        SceneManager.LoadScene("Lobby"); // "Lobby" 씬의 실제 이름으로 변경
+        // Lobby 씬으로 이동
+        SceneManager.LoadScene("01_Scenes/02CardGameVR/Lobby"); // "Lobby" 씬의 실제 이름으로 변경
     }
 }
