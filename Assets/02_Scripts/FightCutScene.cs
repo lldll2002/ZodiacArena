@@ -137,10 +137,24 @@ public class FightCutScene : MonoBehaviourPunCallbacks
                 winner = (player1Card < player2Card) ? 1 : (player1Card > player2Card) ? 2 : 0; // 1: player1 승리, 2: player2 승리, 0: 무승부
             }
 
-            // PlayerWon 값 설정
-            PlayerPrefs.SetInt("PlayerWon", (winner == 1) ? 1 : (winner == 2) ? 0 : -1); // 1: player1 승리, 0: player2 승리, -1: 무승부
+            // 로컬 플레이어가 승자인지 여부에 따라 PlayerWon 값 설정
+            if ((PhotonNetwork.LocalPlayer == PhotonNetwork.PlayerList[0] && winner == 1) ||
+                (PhotonNetwork.LocalPlayer == PhotonNetwork.PlayerList[1] && winner == 2))
+            {
+                PlayerPrefs.SetInt("PlayerWon", 1); // 승리한 경우
+            }
+            else if (winner == 0)
+            {
+                PlayerPrefs.SetInt("PlayerWon", -1); // 무승부
+            }
+            else
+            {
+                PlayerPrefs.SetInt("PlayerWon", 0); // 패배한 경우
+            }
+
             PlayerPrefs.Save(); // 데이터를 즉시 저장
         }
+
 
         // 컷씬이 끝난 후 방 나가기 및 다음 씬으로 이동
         PhotonNetwork.LeaveRoom();
