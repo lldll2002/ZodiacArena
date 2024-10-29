@@ -123,25 +123,25 @@ public class FightCutScene : MonoBehaviourPunCallbacks
         if (PhotonNetwork.LocalPlayer.CustomProperties.ContainsKey("selectedCard"))
         {
             int localPlayerCard = (int)PhotonNetwork.LocalPlayer.CustomProperties["selectedCard"];
+            int opponentCard = (PhotonNetwork.LocalPlayer == PhotonNetwork.PlayerList[0]) ? player2Card : player1Card; // 상대 카드 설정
             int winner;
 
             // 승리 조건에 따라 승자를 결정
             if (winCondition == "High")
             {
-                Debug.Log($"WinCondition is High, {player1Card} Vs. {player2Card}");
-                winner = (player1Card > player2Card) ? 1 : (player1Card < player2Card) ? 2 : 0; // 1: player1 승리, 2: player2 승리, 0: 무승부
+                Debug.Log($"WinCondition is High, LocalPlayer: {localPlayerCard} Vs. Opponent: {opponentCard}");
+                winner = (localPlayerCard > opponentCard) ? 1 : (localPlayerCard < opponentCard) ? 2 : 0; // 1: 로컬 플레이어 승리, 2: 상대 플레이어 승리, 0: 무승부
             }
             else // "Low"인 경우
             {
-                Debug.Log($"WinCondition is Low, {player1Card} Vs. {player2Card}");
-                winner = (player1Card < player2Card) ? 1 : (player1Card > player2Card) ? 2 : 0; // 1: player1 승리, 2: player2 승리, 0: 무승부
+                Debug.Log($"WinCondition is Low, LocalPlayer: {localPlayerCard} Vs. Opponent: {opponentCard}");
+                winner = (localPlayerCard < opponentCard) ? 1 : (localPlayerCard > opponentCard) ? 2 : 0; // 1: 로컬 플레이어 승리, 2: 상대 플레이어 승리, 0: 무승부
             }
 
-            // 로컬 플레이어가 승자인지 여부에 따라 PlayerWon 값 설정
-            if ((PhotonNetwork.LocalPlayer == PhotonNetwork.PlayerList[0] && winner == 1) ||
-                (PhotonNetwork.LocalPlayer == PhotonNetwork.PlayerList[1] && winner == 2))
+            // 로컬 플레이어의 승리 여부에 따라 PlayerWon 값 설정
+            if (winner == 1)
             {
-                PlayerPrefs.SetInt("PlayerWon", 1); // 승리한 경우
+                PlayerPrefs.SetInt("PlayerWon", 1); // 로컬 플레이어가 승리한 경우
             }
             else if (winner == 0)
             {
@@ -149,11 +149,12 @@ public class FightCutScene : MonoBehaviourPunCallbacks
             }
             else
             {
-                PlayerPrefs.SetInt("PlayerWon", 0); // 패배한 경우
+                PlayerPrefs.SetInt("PlayerWon", 0); // 로컬 플레이어가 패배한 경우
             }
 
             PlayerPrefs.Save(); // 데이터를 즉시 저장
         }
+
 
 
         // 컷씬이 끝난 후 방 나가기 및 다음 씬으로 이동
