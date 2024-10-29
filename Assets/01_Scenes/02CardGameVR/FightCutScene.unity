@@ -1677,6 +1677,8 @@ MonoBehaviour:
   visualEffectPrefab: {fileID: 3744133877081091469, guid: f9844271e67bf9748a1ba692eec6fc96, type: 3}
   collisionEffectPrefab: {fileID: 358637981425055526, guid: 3bbf1c0c1a6253e4ab71b25347a08d9b, type: 3}
   winEffectPrefab: {fileID: 3601844866718213198, guid: 1b44f97349457c94fbb3256f741e0ffe, type: 3}
+  summonSound: {fileID: 8300000, guid: a2ae90e42daaf4723a539c25867d37fd, type: 3}
+  collisionSound: {fileID: 8300000, guid: e58b563b0100d4b73b563b9bd51aafa3, type: 3}
 --- !u!1001 &2016887405
 PrefabInstance:
   m_ObjectHideFlags: 0

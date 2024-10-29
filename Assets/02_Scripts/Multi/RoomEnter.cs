@@ -14,6 +14,9 @@ public class RoomEnter : MonoBehaviourPunCallbacks
     {
         DisplayPlayerNickName();
         DisplayConnectInfo();
+
+        // 현재 플레이어가 방에 처음 들어왔을 때 역할 설정
+        AssignPlayerRole();
     }
 
     //================================================
@@ -48,6 +51,16 @@ public class RoomEnter : MonoBehaviourPunCallbacks
     {
         string playerNickName = PhotonNetwork.NickName;
         playerEnterText.text = playerNickName + " entered the room.";
+    }
+
+    //=================================================
+    private void AssignPlayerRole()
+    {
+        // 현재 방의 플레이어 수에 따라 역할 할당
+        int role = (PhotonNetwork.CurrentRoom.PlayerCount == 1) ? 0 : 1;
+        PlayerPrefs.SetInt("PlayerRole", role);
+        Debug.Log($"Your role is {role}");
+        PlayerPrefs.Save();
     }
 
     //================================================

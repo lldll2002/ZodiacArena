@@ -17,12 +17,9 @@ public class SetParentXR : MonoBehaviour
             // 씬 내에서 XR Origin 찾기
             xrOrigin = FindObjectOfType<XROrigin>();  // XR Origin을 찾기
 
-            if (xrOrigin != null)
+            if (xrOrigin != null && xrOrigin.transform.parent != this.transform) // 부모가 현재 플레이어가 아닐 때만 설정
             {
-                // XR Origin을 Player의 자식으로 설정
                 xrOrigin.transform.SetParent(this.transform);
-
-                // 위치와 회전값을 초기화
                 xrOrigin.transform.localPosition = Vector3.zero;
                 xrOrigin.transform.localRotation = Quaternion.identity;
 
