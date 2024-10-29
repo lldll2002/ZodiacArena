@@ -29,6 +29,7 @@ public class FightCutScene : MonoBehaviourPunCallbacks
     [SerializeField] AudioClip spwanEffectSound;
     [SerializeField] AudioClip fightEffectSound;
 
+    private string winCondition;
 
     void Start()
     {
@@ -39,17 +40,11 @@ public class FightCutScene : MonoBehaviourPunCallbacks
             Debug.LogError("AudioSource component is missing.");
         }
 
-
         UpdatePlayerInfo();
 
-
-
         // 승리 조건을 PlayerPrefs에서 불러오기
-        string winCondition = PlayerPrefs.GetString("WinCondition", "DefaultCondition");
-
+        winCondition = PlayerPrefs.GetString("WinCondition", "DefaultCondition");
     }
-
-
 
     private void UpdatePlayerInfo()
     {
@@ -128,7 +123,20 @@ public class FightCutScene : MonoBehaviourPunCallbacks
         if (PhotonNetwork.LocalPlayer.CustomProperties.ContainsKey("selectedCard"))
         {
             int localPlayerCard = (int)PhotonNetwork.LocalPlayer.CustomProperties["selectedCard"];
-            PlayerPrefs.SetInt("PlayerWon", localPlayerCard == player1Card ? (player1Card > player2Card ? 1 : (player1Card < player2Card ? 0 : -1)) : (player2Card > localPlayerCard ? 0 : (player2Card < localPlayerCard ? 1 : -1)));
+            int winner;
+
+            // 승리 조건에 따라 승자를 결정
+            if (winCondition == "High")
+            {
+                winner = (player1Card > player2Card) ? 1 : (player1Card < player2Card) ? 2 : 0; // 1: player1 승리, 2: player2 승리, 0: 무승부
+            }
+            else // "Low"인 경우
+            {
+                winner = (player1Card < player2Card) ? 1 : (player1Card > player2Card) ? 2 : 0; // 1: player1 승리, 2: player2 승리, 0: 무승부
+            }
+
+            // PlayerWon 값 설정
+            PlayerPrefs.SetInt("PlayerWon", (winner == 1) ? 1 : (winner == 2) ? 0 : -1); // 1: player1 승리, 0: player2 승리, -1: 무승부
             PlayerPrefs.Save(); // 데이터를 즉시 저장
         }
 
@@ -155,7 +163,6 @@ public class FightCutScene : MonoBehaviourPunCallbacks
             return null;
         }
     }
-
 
     private void SpawnEffectSound()
     {
