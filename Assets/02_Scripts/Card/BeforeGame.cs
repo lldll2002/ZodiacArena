@@ -3,6 +3,8 @@ using TMPro; // TMP_Text 사용을 위해 추가
 using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
+using Hashtable = ExitGames.Client.Photon.Hashtable;
+using System.Collections.Generic;
 
 public class BeforeGame : MonoBehaviourPunCallbacks
 {
@@ -57,13 +59,30 @@ public class BeforeGame : MonoBehaviourPunCallbacks
 
     private void StartCoinFlip()
     {
+        // if (PhotonNetwork.IsMasterClient)
+        // {
+        //     Hashtable ht = new Hashtable() { { "HIGH_LOW", Random.Range(0, 2) } };
+        //     photonView.Owner.SetCustomProperties(ht);
+        // }
+
         // 랜덤하게 Heads 또는 Tails 결정
         bool isHeads = Random.Range(0, 2) == 0; // 0: Heads, 1: Tails
         resultText.text = $"Coin flipped: {(isHeads ? "Heads" : "Tails")}"; // TMP_Text에 결과 표시
 
         // 역할을 할당
-        int headPlayerActorNumber = isHeads ? PhotonNetwork.LocalPlayer.ActorNumber : GetOtherPlayer().ActorNumber;
-        int tailsPlayerActorNumber = isHeads ? GetOtherPlayer().ActorNumber : PhotonNetwork.LocalPlayer.ActorNumber;
+        //int headPlayerActorNumber = isHeads ? PhotonNetwork.LocalPlayer.ActorNumber : GetOtherPlayer().ActorNumber;
+        //int tailsPlayerActorNumber = isHeads ? GetOtherPlayer().ActorNumber : PhotonNetwork.LocalPlayer.ActorNumber;
+
+        int firstNumber = Random.Range(0, 2);
+        int secondNumber = Random.Range(0, 2);
+
+        while (firstNumber == secondNumber)
+        {
+            secondNumber = Random.Range(0, 2);
+        }
+
+        int headPlayerActorNumber = firstNumber;
+        int tailsPlayerActorNumber = secondNumber;
 
         Debug.Log($"Head Player: {headPlayerActorNumber}, Tails Player: {tailsPlayerActorNumber}");
 
