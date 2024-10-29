@@ -85,9 +85,7 @@ public class AutoMove : MonoBehaviour
         // 회전
         while (currentRotation < totalRotation)
         {
-            float rotationThisFrame = (totalRotation / rotationDuration) * Time.deltaTime; // 매 프레임마다 회전할 각도
-            xrOrigin.transform.Rotate(0, rotationThisFrame, 0, Space.World); // Y축을 기준으로 회전
-            currentRotation += rotationThisFrame;
+
             elapsedTime += Time.deltaTime;
 
             // 1초마다 이펙트 생성
