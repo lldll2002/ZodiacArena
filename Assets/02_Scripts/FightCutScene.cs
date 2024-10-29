@@ -18,11 +18,6 @@ public class FightCutScene : MonoBehaviourPunCallbacks
     [SerializeField] private GameObject collisionEffectPrefab;
     [SerializeField] private GameObject winEffectPrefab;
 
-    [Header("Audio Clips")]
-    [SerializeField] private AudioClip summonSound;
-    [SerializeField] private AudioClip collisionSound;
-    private AudioSource audioSource;
-
     private int player1Card;
     private int player2Card;
 
@@ -64,7 +59,6 @@ public class FightCutScene : MonoBehaviourPunCallbacks
     {
         // 1번 플레이어 이펙트 소환
         visualEffectInstance = Instantiate(visualEffectPrefab, player1SpawnPoint.position, Quaternion.identity);
-        audioSource.PlayOneShot(summonSound);
         Destroy(visualEffectInstance, 1.0f); // 이펙트를 1초 후에 삭제
         yield return new WaitForSeconds(0.5f); // 약간의 지연 후 모델 소환
 
@@ -80,7 +74,6 @@ public class FightCutScene : MonoBehaviourPunCallbacks
 
         // 2번 플레이어 이펙트 소환
         visualEffectInstance = Instantiate(visualEffectPrefab, player2SpawnPoint.position, Quaternion.identity);
-        audioSource.PlayOneShot(summonSound);
         Destroy(visualEffectInstance, 1.0f);
         yield return new WaitForSeconds(0.5f);
 
@@ -101,7 +94,6 @@ public class FightCutScene : MonoBehaviourPunCallbacks
         yield return new WaitForSeconds(1.5f);
 
         // 부딪힘 효과(shake)
-        audioSource.PlayOneShot(collisionSound);
         player1ZodiacInstance.transform.DOShakePosition(0.5f, 1, 10, 50, false, false);
         player2ZodiacInstance.transform.DOShakePosition(0.5f, 1, 10, 50, false, false);
 
@@ -112,33 +104,9 @@ public class FightCutScene : MonoBehaviourPunCallbacks
         yield return new WaitForSeconds(2f);
 
         // 두 모델 삭제
-        // 전투 결과에 따라 처리
-        int winner = player1Card > player2Card ? 1 : (player1Card < player2Card ? 2 : -1);
-        if (winner == 1)
-        {
-            Destroy(player2ZodiacInstance);
-            player1ZodiacInstance.transform.position = midpoint;
-        }
-        else if (winner == 2)
-        {
-            Destroy(player1ZodiacInstance);
-            player2ZodiacInstance.transform.position = midpoint;
-            player2ZodiacInstance.transform.DORotate(new Vector3(90, 0, 0), 1.0f).SetEase(Ease.OutBack);
-        }
-        else
-        {
-            // 무승부 처리
-            Destroy(player1ZodiacInstance);
-            Destroy(player2ZodiacInstance);
-        }
-
-
-
-        /*
         Destroy(player1ZodiacInstance);
         Destroy(player2ZodiacInstance);
         Destroy(visualEffectInstance);
-        */
 
         // 승리 여부를 PlayerPrefs에 저장 (player1Card가 더 크면 player1Wins)
         PlayerPrefs.SetInt("PlayerWon", player1Card > player2Card ? 1 : (player1Card < player2Card ? 0 : -1));
