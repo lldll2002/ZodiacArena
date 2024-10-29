@@ -9,22 +9,43 @@ using Unity.Services.Core;
 
 public class FightResultManager : MonoBehaviour
 {
+    [Header("UI")]
     [SerializeField] private TMP_Text resultText; // 승리 결과 표시 텍스트
     private int winCount; // 현재 승리 횟수 저장
 
+
+    [Header("Effect")]
     [SerializeField] private GameObject winnerEffect; // 승자 이펙트를 인스펙터에 연결할 변수 
     [SerializeField] private GameObject loserEffect; // 패자 이펙트를 인스펙터에 연결할 변수 
-
     [SerializeField] private Transform EffectSpawnPoint;
 
+    [Header("Model")]
+    [SerializeField] private Transform modelSpawnPoint; // 모델이 생성될 위치
+    [SerializeField] private GameObject[] zodiacPrefabs; // 모델 프리팹 배열
 
-
+    [Header("SFX")]
+    [SerializeField] private AudioClip winSFX; // 승리 SFX
+    [SerializeField] private AudioClip loseSFX; // 패배 SFX
+    private AudioSource audioSource; // AudioSource 컴포넌트
 
     async void Start()
     {
 
         // Unity 서비스 초기화
         await UnityServices.InitializeAsync();
+
+        // AudioSource 컴포넌트 생성 및 설정
+        audioSource = gameObject.AddComponent<AudioSource>();
+
+
+        // 플레이어가 선택한 카드 번호 가져오기
+        int selectedCard = PlayerPrefs.GetInt("SelectedCard", -1);
+
+        // 유효한 카드 번호일 때만 모델 생성
+        if (selectedCard >= 1 && selectedCard <= zodiacPrefabs.Length)
+        {
+            Instantiate(zodiacPrefabs[selectedCard - 1], modelSpawnPoint.position, Quaternion.identity);
+        }
 
         // PlayerPrefs에서 플레이어 승리 여부를 가져옴
         int playerWon = PlayerPrefs.GetInt("PlayerWon", -1); // 기본값 -1로 설정
@@ -37,12 +58,14 @@ public class FightResultManager : MonoBehaviour
         {
             resultText.text = "You win!";
             Instantiate(winnerEffect, EffectSpawnPoint);
+            PlaySFX(winSFX);
             await UpdateWinCount(); // 승리 횟수 업데이트
         }
         else if (playerWon == 0)
         {
             resultText.text = "You lost!";
             Instantiate(loserEffect, EffectSpawnPoint);
+            PlaySFX(loseSFX);
         }
         else
         {
@@ -61,21 +84,17 @@ public class FightResultManager : MonoBehaviour
         Invoke("LoadRankingScene", 3f);
     }
 
-    /*
-
-    private void ShowEffect()
+    private void PlaySFX(AudioClip clip)
     {
-        if (currentState == GameState.win && winnerEffect != null)
+        if (clip != null)
         {
-            Instantiate(winnerEffect, transform.position, Quaternion.identity);
+            audioSource.PlayOneShot(clip); // 지정한 클립을 한 번 재생
         }
-        else if (currentState == GameState.Lose && loserEffect != null)
+        else
         {
-            Instantiate(loserEffect, transform.position, Quaternion.identity);
+            Debug.LogWarning("SFX 클립이 없습니다.");
         }
     }
-
-    */
 
     private async Task LoadPlayerNickName()
     {
