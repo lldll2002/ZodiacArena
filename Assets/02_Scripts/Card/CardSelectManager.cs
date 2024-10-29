@@ -28,7 +28,8 @@ public class CardSelectManager : MonoBehaviourPunCallbacks
         Debug.Log($"Win condition retrieved: {winCondition}");
 
         UpdatePlayerNames();
-        UpdateWinConditionText(winCondition);
+        winConditionText.text = $"승리 조건: {winCondition}";
+        //UpdateWinConditionText(winCondition);
         ShuffleCardButtons();
 
         infoText.text = "카드를 3장 선택하세요.";
