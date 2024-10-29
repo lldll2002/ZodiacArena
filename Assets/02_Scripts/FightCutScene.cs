@@ -18,8 +18,8 @@ public class FightCutScene : MonoBehaviourPunCallbacks
     [SerializeField] private GameObject collisionEffectPrefab;
     [SerializeField] private GameObject winEffectPrefab;
 
-    private int player1Card = 10;
-    private int player2Card = 5;
+    private int player1Card;
+    private int player2Card;
 
     private GameObject player1ZodiacInstance;
     private GameObject player2ZodiacInstance;
