@@ -128,10 +128,12 @@ public class FightCutScene : MonoBehaviourPunCallbacks
             // 승리 조건에 따라 승자를 결정
             if (winCondition == "High")
             {
+                Debug.Log($"WinCondition is High, {player1Card} Vs. {player2Card}");
                 winner = (player1Card > player2Card) ? 1 : (player1Card < player2Card) ? 2 : 0; // 1: player1 승리, 2: player2 승리, 0: 무승부
             }
             else // "Low"인 경우
             {
+                Debug.Log($"WinCondition is Low, {player1Card} Vs. {player2Card}");
                 winner = (player1Card < player2Card) ? 1 : (player1Card > player2Card) ? 2 : 0; // 1: player1 승리, 2: player2 승리, 0: 무승부
             }
 
