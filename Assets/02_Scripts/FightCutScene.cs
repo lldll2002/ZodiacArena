@@ -18,16 +18,31 @@ public class FightCutScene : MonoBehaviourPunCallbacks
     [SerializeField] private GameObject collisionEffectPrefab;
     [SerializeField] private GameObject winEffectPrefab;
 
-    private int player1Card;
-    private int player2Card;
+    private int player1Card = 10;
+    private int player2Card = 5;
 
     private GameObject player1ZodiacInstance;
     private GameObject player2ZodiacInstance;
     private GameObject visualEffectInstance;
 
+    private AudioSource audioSource;
+    [SerializeField] AudioClip spwanEffectSound;
+    [SerializeField] AudioClip fightEffectSound;
+
+
     void Start()
     {
+        // AudioSource 초기화 및 없으면 수동으로 추가
+        audioSource = GetComponent<AudioSource>();
+        if (audioSource == null)
+        {
+            Debug.LogError("AudioSource component is missing.");
+        }
+
+
         UpdatePlayerInfo();
+
+
 
         // 승리 조건을 PlayerPrefs에서 불러오기
         string winCondition = PlayerPrefs.GetString("WinCondition", "DefaultCondition");
@@ -57,6 +72,7 @@ public class FightCutScene : MonoBehaviourPunCallbacks
     {
         // 1번 플레이어 이펙트 소환
         visualEffectInstance = Instantiate(visualEffectPrefab, player1SpawnPoint.position, Quaternion.identity);
+        SpawnEffectSound();
         Destroy(visualEffectInstance, 1.0f); // 이펙트를 1초 후에 삭제
         yield return new WaitForSeconds(0.5f); // 약간의 지연 후 모델 소환
 
@@ -72,6 +88,7 @@ public class FightCutScene : MonoBehaviourPunCallbacks
 
         // 2번 플레이어 이펙트 소환
         visualEffectInstance = Instantiate(visualEffectPrefab, player2SpawnPoint.position, Quaternion.identity);
+        SpawnEffectSound();
         Destroy(visualEffectInstance, 1.0f);
         yield return new WaitForSeconds(0.5f);
 
@@ -94,6 +111,7 @@ public class FightCutScene : MonoBehaviourPunCallbacks
         // 부딪힘 효과(shake)
         player1ZodiacInstance.transform.DOShakePosition(0.5f, 1, 10, 50, false, false);
         player2ZodiacInstance.transform.DOShakePosition(0.5f, 1, 10, 50, false, false);
+        FightEffectSound();
 
         GameObject collisionEffectInstance = Instantiate(collisionEffectPrefab, midpoint, Quaternion.identity);
         Destroy(collisionEffectInstance, 0.1f);
@@ -135,6 +153,31 @@ public class FightCutScene : MonoBehaviourPunCallbacks
         {
             Debug.LogWarning("Invalid card number: " + card);
             return null;
+        }
+    }
+
+
+    private void SpawnEffectSound()
+    {
+        if (spwanEffectSound != null)
+        {
+            audioSource.PlayOneShot(spwanEffectSound);
+        }
+        else
+        {
+            Debug.LogWarning("Spawn effect sound clip is missing.");
+        }
+    }
+
+    private void FightEffectSound()
+    {
+        if (fightEffectSound != null)
+        {
+            audioSource.PlayOneShot(fightEffectSound);
+        }
+        else
+        {
+            Debug.LogWarning("Fight effect sound clip is missing.");
         }
     }
 }
