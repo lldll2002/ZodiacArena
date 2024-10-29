@@ -105,6 +105,13 @@ public class BeforeGame : MonoBehaviourPunCallbacks
         Photon.Realtime.Player headPlayer = PhotonNetwork.CurrentRoom.GetPlayer(headPlayerActorNumber);
         Photon.Realtime.Player tailsPlayer = PhotonNetwork.CurrentRoom.GetPlayer(tailsPlayerActorNumber);
 
+        // 플레이어가 null인지 확인
+        if (headPlayer == null || tailsPlayer == null)
+        {
+            Debug.LogError("Player not found! Check the ActorNumber.");
+            return; // 플레이어가 없으면 조기 반환
+        }
+
         // 각 플레이어에 따라 턴을 할당
         if (PhotonNetwork.LocalPlayer.ActorNumber == headPlayerActorNumber)
         {
