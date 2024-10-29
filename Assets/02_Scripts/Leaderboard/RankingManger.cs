@@ -28,55 +28,6 @@ public class RankingManager : MonoBehaviour
         returnToLobbyButton.onClick.AddListener(ReturnToLobby);
     }
 
-    /*
-        private async Task LoadAndDisplayRankings()
-        {
-            try
-            {
-                var response = await LeaderboardsService.Instance.GetScoresAsync(leaderboardId);
-                entries = response.Results;
-
-                Dictionary<string, string> playerNames = new();
-
-                foreach (var entry in entries)
-                {
-                    var playerData = await CloudSaveService.Instance.Data.LoadAsync(new HashSet<string> { entry.PlayerId });
-
-                    if (playerData != null && playerData.Count > 0)
-                    {
-                        string playerName = playerData.ContainsKey("playerName") ? playerData["playerName"].ToString() : "Unknown Player";
-                        playerNames[entry.PlayerId] = playerName;
-                    }
-                    else
-                    {
-                        playerNames[entry.PlayerId] = "Unknown Player";
-                    }
-                }
-
-                var sortedEntries = entries.OrderByDescending(entry => entry.Score).ToList();
-
-                for (int i = 0; i < rankTexts.Length; i++)
-                {
-                    if (i < sortedEntries.Count)
-                    {
-                        var entry = sortedEntries[i];
-                        string playerName = playerNames[entry.PlayerId];
-                        rankTexts[i].text = $"{playerName}: {entry.Score}";
-                    }
-                    else
-                    {
-                        rankTexts[i].text = "";
-                    }
-                }
-            }
-            catch (System.Exception e)
-            {
-                Debug.LogError($"랭킹 데이터 로드 실패: {e.Message}");
-            }
-        }
-    */
-
-
     private async Task LoadAndDisplayRankings()
     {
         try
@@ -84,34 +35,23 @@ public class RankingManager : MonoBehaviour
             var response = await LeaderboardsService.Instance.GetScoresAsync(leaderboardId);
             entries = response.Results;
 
-            // 플레이어 닉네임을 저장할 Dictionary
             Dictionary<string, string> playerNames = new();
 
             foreach (var entry in entries)
             {
-                try
-                {
-                    // 각 플레이어의 "playerName" 데이터를 요청
-                    var playerData = await CloudSaveService.Instance.Data.LoadAsync(new HashSet<string> { "playerName" });
+                var playerData = await CloudSaveService.Instance.Data.LoadAsync(new HashSet<string> { entry.PlayerId });
 
-                    if (playerData != null && playerData.ContainsKey("playerName"))
-                    {
-                        string playerName = playerData["playerName"].ToString();
-                        playerNames[entry.PlayerId] = playerName;
-                    }
-                    else
-                    {
-                        playerNames[entry.PlayerId] = "Unknown Player";
-                    }
-                }
-                catch (System.Exception e)
+                if (playerData != null && playerData.Count > 0)
                 {
-                    Debug.LogError($"플레이어 닉네임 로드 실패: {e.Message}");
+                    string playerName = playerData.ContainsKey("playerName") ? playerData["playerName"].ToString() : "Unknown Player";
+                    playerNames[entry.PlayerId] = playerName;
+                }
+                else
+                {
                     playerNames[entry.PlayerId] = "Unknown Player";
                 }
             }
 
-            // 점수를 내림차순으로 정렬
             var sortedEntries = entries.OrderByDescending(entry => entry.Score).ToList();
 
             for (int i = 0; i < rankTexts.Length; i++)
@@ -119,7 +59,7 @@ public class RankingManager : MonoBehaviour
                 if (i < sortedEntries.Count)
                 {
                     var entry = sortedEntries[i];
-                    string playerName = playerNames.ContainsKey(entry.PlayerId) ? playerNames[entry.PlayerId] : "Unknown Player";
+                    string playerName = playerNames[entry.PlayerId];
                     rankTexts[i].text = $"{playerName}: {entry.Score}";
                 }
                 else
@@ -133,7 +73,6 @@ public class RankingManager : MonoBehaviour
             Debug.LogError($"랭킹 데이터 로드 실패: {e.Message}");
         }
     }
-
 
     // 로비 씬으로 이동하는 함수
     private void ReturnToLobby()

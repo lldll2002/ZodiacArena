@@ -1667,22 +1667,6 @@ MonoBehaviour:
   winnerEffect: {fileID: 1385321161198062031, guid: 4bd1d10989185394c9452e72a0498ed5, type: 3}
   loserEffect: {fileID: 5635402893808262196, guid: d3438b4703a846e479d2e962596e508c, type: 3}
   EffectSpawnPoint: {fileID: 1405636451}
-  modelSpawnPoint: {fileID: 1630515361}
-  zodiacPrefabs:
-  - {fileID: 3887160826251624116, guid: 24ac1395efc6e22488364875395c17e9, type: 3}
-  - {fileID: 7581293112493943768, guid: 53635464dac59d6479e8cd82d0b1756b, type: 3}
-  - {fileID: 8186988701572341907, guid: c2f0dd3eb6b5b624bb441f7e6197ed65, type: 3}
-  - {fileID: 5448814889749616445, guid: 6863094169490a14c92326a09928a7c2, type: 3}
-  - {fileID: 8956787393548346340, guid: 07b2ff2ba58c17341b829b2550261c63, type: 3}
-  - {fileID: 2586456205260852323, guid: 71db37dcb20ea45459efc390a00f239a, type: 3}
-  - {fileID: 5483442182944131079, guid: 5990bba36404cad45a9908e2216033aa, type: 3}
-  - {fileID: 4530629534161674395, guid: 52c0835840e4900439e7bd61c6d532c9, type: 3}
-  - {fileID: 1963165740041303305, guid: 39676b0530238d6439973a098871eccb, type: 3}
-  - {fileID: 3731628813642335300, guid: f06a453a06d1c4e44a691ae79497ceb5, type: 3}
-  - {fileID: 7343497493849946364, guid: a3da79b3ba2c9514d8131584d7e06762, type: 3}
-  - {fileID: 3443920290323463536, guid: 02e2139741fb33947a0bd448c21da163, type: 3}
-  winSFX: {fileID: 8300000, guid: 5019243e23dfbeb47b08afa997c253f5, type: 3}
-  loseSFX: {fileID: 8300000, guid: 795cca2c5d946b54bbfb4737882d7938, type: 3}
 --- !u!1 &1405636450
 GameObject:
   m_ObjectHideFlags: 0
@@ -8739,8 +8723,8 @@ SceneRoots:
   - {fileID: 2131889115}
   - {fileID: 2045462202}
   - {fileID: 34289143}
-  - {fileID: 1630515360}
-  - {fileID: 1405636451}
   - {fileID: 1049290451}
   - {fileID: 1370854801}
   - {fileID: 682247936}
+  - {fileID: 1630515360}
+  - {fileID: 1405636451}

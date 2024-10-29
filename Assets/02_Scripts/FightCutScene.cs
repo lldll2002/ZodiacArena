@@ -42,8 +42,6 @@ public class FightCutScene : MonoBehaviourPunCallbacks
         if (PhotonNetwork.PlayerList.Length > 0 && PhotonNetwork.PlayerList[0].CustomProperties.ContainsKey("selectedCard"))
         {
             player1Card = (int)PhotonNetwork.PlayerList[0].CustomProperties["selectedCard"];
-            PlayerPrefs.SetInt("SelectedCard", player1Card); // PlayerPrefs에 선택한 카드 번호 저장
-            PlayerPrefs.Save(); // 즉시 저장
         }
 
         if (PhotonNetwork.PlayerList.Length > 1 && PhotonNetwork.PlayerList[1].CustomProperties.ContainsKey("selectedCard"))
