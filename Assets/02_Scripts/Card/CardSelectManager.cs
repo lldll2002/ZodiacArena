@@ -22,14 +22,16 @@ public class CardSelectManager : MonoBehaviourPunCallbacks
     {
 
         // 승리 조건을 PlayerPrefs에서 불러오기
-        string winCondition = PlayerPrefs.GetString("WinCondition", "DefaultCondition");
+        string winCondition = PlayerPrefs.GetString("WinCondition", "");
 
         // 불러온 승리 조건에 따라 게임 로직을 구현
         Debug.Log($"Win condition retrieved: {winCondition}");
 
         UpdatePlayerNames();
         winConditionText.text = $"승리 조건: {winCondition}";
-        //UpdateWinConditionText(winCondition);
+
+
+
         ShuffleCardButtons();
 
         infoText.text = "카드를 3장 선택하세요.";

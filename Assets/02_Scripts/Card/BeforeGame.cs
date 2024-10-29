@@ -167,22 +167,32 @@ public class BeforeGame : MonoBehaviourPunCallbacks
 
     private void OnWinConditionSelected(string condition)
     {
-        // 승리 조건을 다른 플레이어에게 전파
-        photonView.RPC("NotifyWinCondition", RpcTarget.All, condition);
+        // 승리 조건을 다른 플레이어에게 전파 (RPC로만 전달하는 대신 CustomProperties 사용)
+        Hashtable ht = new Hashtable { { "WinCondition", condition } };
+        PhotonNetwork.CurrentRoom.SetCustomProperties(ht);
 
-        // 승리 조건을 PlayerPrefs에 저장 (여기서는 선택한 플레이어만 저장)
-        PlayerPrefs.SetString("WinCondition", condition);
-        PlayerPrefs.Save(); // 변경 사항 저장
-
-        // 버튼 비활성화
+        // 버튼 비활성화 및 UI 업데이트
         highButton.gameObject.SetActive(false);
         lowButton.gameObject.SetActive(false);
-
-        // 선택 후 텍스트 업데이트
         selectionText.text = $"Selected win condition: {condition}";
 
         // 모든 플레이어가 선택했는지를 확인
         StartCoroutine(LoadCardSelectAfterDelay(3f)); // 3초 대기 후 CardSelect 씬으로 이동
+    }
+
+    // 모든 플레이어가 WinCondition을 확인할 수 있도록 설정
+    public override void OnRoomPropertiesUpdate(Hashtable propertiesThatChanged)
+    {
+        if (propertiesThatChanged.ContainsKey("WinCondition"))
+        {
+            string winCondition = (string)PhotonNetwork.CurrentRoom.CustomProperties["WinCondition"];
+            selectionText.text = $"Selected win condition: {winCondition}";
+            Debug.Log($"All players received win condition: {winCondition}");
+
+            // 모든 플레이어가 같은 WinCondition으로 게임을 진행하도록 설정
+            PlayerPrefs.SetString("WinCondition", winCondition);
+            PlayerPrefs.Save();
+        }
     }
 
 
