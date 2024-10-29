@@ -31,6 +31,9 @@ public class FightCutScene : MonoBehaviourPunCallbacks
 
     private string winCondition;
 
+    private int localPlayerCard;
+    private int opponentCard;
+
     void Start()
     {
         // AudioSource 초기화 및 없으면 수동으로 추가
@@ -48,25 +51,28 @@ public class FightCutScene : MonoBehaviourPunCallbacks
 
     private void UpdatePlayerInfo()
     {
-        foreach (var player in PhotonNetwork.PlayerList)
+        // 카드 정보를 CustomProperties에서 가져와서 업데이트
+        if (PhotonNetwork.PlayerList.Length > 0 && PhotonNetwork.PlayerList[0].CustomProperties.ContainsKey("selectedCard"))
         {
-            if (player.CustomProperties.ContainsKey("selectedCard"))
-            {
-                int card = (int)player.CustomProperties["selectedCard"];
-                if (player == PhotonNetwork.LocalPlayer)
-                {
-                    player1Card = card;  // 로컬 플레이어 카드
-                    Debug.Log($"Local Player Card: {player1Card}");
-                }
-                else
-                {
-                    player2Card = card;  // 상대방 플레이어 카드
-                    Debug.Log($"Opponent Player Card: {player2Card}");
-                }
-            }
+            player1Card = (int)PhotonNetwork.PlayerList[0].CustomProperties["selectedCard"];
         }
+
+        if (PhotonNetwork.PlayerList.Length > 1 && PhotonNetwork.PlayerList[1].CustomProperties.ContainsKey("selectedCard"))
+        {
+            player2Card = (int)PhotonNetwork.PlayerList[1].CustomProperties["selectedCard"];
+        }
+
+        // 로컬 플레이어 카드 결정
+        localPlayerCard = (PhotonNetwork.LocalPlayer == PhotonNetwork.PlayerList[0]) ? player1Card : player2Card;
+        opponentCard = (PhotonNetwork.LocalPlayer == PhotonNetwork.PlayerList[0]) ? player2Card : player1Card;
+
+        Debug.Log($"Local Player Card: {localPlayerCard}");
+        Debug.Log($"Opponent Player Card: {opponentCard}");
+
+        // 카드 정보가 업데이트되었을 때 애니메이션 시작
         StartCoroutine(ModelTransform());
     }
+
 
 
     private IEnumerator ModelTransform()
