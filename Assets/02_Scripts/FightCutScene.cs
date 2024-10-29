@@ -106,9 +106,13 @@ public class FightCutScene : MonoBehaviourPunCallbacks
         Destroy(player2ZodiacInstance);
         Destroy(visualEffectInstance);
 
-        // 승리 여부를 PlayerPrefs에 저장 (player1Card가 더 크면 player1Wins)
-        PlayerPrefs.SetInt("PlayerWon", player1Card > player2Card ? 1 : (player1Card < player2Card ? 0 : -1));
-        PlayerPrefs.Save(); // 데이터를 즉시 저장
+        // 현재 로컬 플레이어의 카드 값과 비교하여 승리 여부를 PlayerPrefs에 저장
+        if (PhotonNetwork.LocalPlayer.CustomProperties.ContainsKey("selectedCard"))
+        {
+            int localPlayerCard = (int)PhotonNetwork.LocalPlayer.CustomProperties["selectedCard"];
+            PlayerPrefs.SetInt("PlayerWon", localPlayerCard == player1Card ? (player1Card > player2Card ? 1 : (player1Card < player2Card ? 0 : -1)) : (player2Card > localPlayerCard ? 0 : (player2Card < localPlayerCard ? 1 : -1)));
+            PlayerPrefs.Save(); // 데이터를 즉시 저장
+        }
 
         // 컷씬이 끝난 후 방 나가기 및 다음 씬으로 이동
         PhotonNetwork.LeaveRoom();
