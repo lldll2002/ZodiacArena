@@ -22,6 +22,11 @@ public class FightCardSelect : MonoBehaviourPunCallbacks
     [Header("ConstellationCard")]
     [SerializeField] private Sprite[] cardSprites; // 카드 이미지 배열
 
+    [Header("Effects")]
+    [SerializeField] private AudioClip summonSound; // 카드 소환 효과음
+    [SerializeField] private GameObject summonEffectPrefab; // 카드 소환 이펙트 프리팹
+    private AudioSource audioSource; // AudioSource 컴포넌트
+
     private int[] selectedCards;
     private int? selectedCard = null; // 선택된 카드
     private bool canSelectCard = true; // 카드 선택 가능 여부
@@ -62,6 +67,10 @@ public class FightCardSelect : MonoBehaviourPunCallbacks
                     cardButtons[i].gameObject.SetActive(false);
                 }
             }
+
+            // AudioSource 초기화
+            audioSource = gameObject.AddComponent<AudioSource>();
+            audioSource.clip = summonSound; // 효과음을 설정합니다.
         }
 
         // 플레이어 이름 표시
@@ -129,6 +138,13 @@ public class FightCardSelect : MonoBehaviourPunCallbacks
 
             // 모든 플레이어에게 선택을 전파하는 RPC 호출 추가
             photonView.RPC("NotifyCardSelection", RpcTarget.All, selectedCard.Value);
+
+            // 효과음 재생
+            audioSource.Play();
+
+            // 카드 소환 이펙트 생성
+            GameObject effect = Instantiate(summonEffectPrefab, transform.position, Quaternion.identity);
+            Destroy(effect, 3f); // 3초 후 이펙트 삭제
         }
         else if (!canSelectCard)
         {
@@ -139,6 +155,7 @@ public class FightCardSelect : MonoBehaviourPunCallbacks
             winConditionText.text = "Please select a card before confirming!";
         }
     }
+
 
     [PunRPC]
     private void NotifyCardSelection(int cardValue)
