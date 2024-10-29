@@ -82,14 +82,13 @@ public class AutoMove : MonoBehaviour
         int effectSpawnIndex = 0; // 이펙트 스폰 위치 인덱스
         float nextEffectSpawnTime = 1.0f; // 첫 이펙트 생성 시간 설정
 
-        // 회전
-        while (currentRotation < totalRotation)
+        // 이펙트 스폰 포인트 배열이 끝날 때까지 이펙트 생성
+        while (effectSpawnIndex < effectSpawnPoints.Length)
         {
-
             elapsedTime += Time.deltaTime;
 
             // 1초마다 이펙트 생성
-            if (elapsedTime >= nextEffectSpawnTime && effectSpawnIndex < effectSpawnPoints.Length)
+            if (elapsedTime >= nextEffectSpawnTime)
             {
                 // 이펙트 생성
                 Instantiate(effectPrefab, effectSpawnPoints[effectSpawnIndex].position, Quaternion.identity);
@@ -102,6 +101,7 @@ public class AutoMove : MonoBehaviour
             }
 
             yield return null; // 다음 프레임까지 대기
+
         }
 
         // 회전 완료 확인 로그
