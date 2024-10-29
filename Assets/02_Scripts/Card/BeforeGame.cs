@@ -59,6 +59,14 @@ public class BeforeGame : MonoBehaviourPunCallbacks
 
     private void StartCoinFlip()
     {
+        // 방에 두 명의 플레이어가 있는지 확인
+        if (PhotonNetwork.CurrentRoom.PlayerCount < 2)
+        {
+            Debug.Log("Waiting for another player to join...");
+            return; // 플레이어가 부족할 경우 조기 반환
+        }
+
+
         // if (PhotonNetwork.IsMasterClient)
         // {
         //     Hashtable ht = new Hashtable() { { "HIGH_LOW", Random.Range(0, 2) } };
@@ -73,8 +81,8 @@ public class BeforeGame : MonoBehaviourPunCallbacks
         //int headPlayerActorNumber = isHeads ? PhotonNetwork.LocalPlayer.ActorNumber : GetOtherPlayer().ActorNumber;
         //int tailsPlayerActorNumber = isHeads ? GetOtherPlayer().ActorNumber : PhotonNetwork.LocalPlayer.ActorNumber;
 
-        int firstNumber = Random.Range(0, 2);
-        int secondNumber = Random.Range(0, 2);
+        int firstNumber = Random.Range(0, 2);   //0,1
+        int secondNumber = Random.Range(0, 2);  //0,1
 
         while (firstNumber == secondNumber)
         {
