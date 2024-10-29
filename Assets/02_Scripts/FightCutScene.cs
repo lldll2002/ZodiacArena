@@ -119,47 +119,40 @@ public class FightCutScene : MonoBehaviourPunCallbacks
         Destroy(player2ZodiacInstance);
         Destroy(visualEffectInstance);
 
-        // 현재 로컬 플레이어의 카드 값과 비교하여 승리 여부를 PlayerPrefs에 저장
-        if (PhotonNetwork.LocalPlayer.CustomProperties.ContainsKey("selectedCard"))
-        {
-            int localPlayerCard = (int)PhotonNetwork.LocalPlayer.CustomProperties["selectedCard"];
-            int opponentCard = (PhotonNetwork.LocalPlayer == PhotonNetwork.PlayerList[0]) ? player2Card : player1Card; // 상대 카드 설정
-            int winner;
-
-            // 승리 조건에 따라 승자를 결정
-            if (winCondition == "High")
-            {
-                Debug.Log($"WinCondition is High, LocalPlayer: {localPlayerCard} Vs. Opponent: {opponentCard}");
-                winner = (localPlayerCard > opponentCard) ? 1 : (localPlayerCard < opponentCard) ? 2 : 0; // 1: 로컬 플레이어 승리, 2: 상대 플레이어 승리, 0: 무승부
-            }
-            else // "Low"인 경우
-            {
-                Debug.Log($"WinCondition is Low, LocalPlayer: {localPlayerCard} Vs. Opponent: {opponentCard}");
-                winner = (localPlayerCard < opponentCard) ? 1 : (localPlayerCard > opponentCard) ? 2 : 0; // 1: 로컬 플레이어 승리, 2: 상대 플레이어 승리, 0: 무승부
-            }
-
-            // 로컬 플레이어의 승리 여부에 따라 PlayerWon 값 설정
-            if (winner == 1)
-            {
-                PlayerPrefs.SetInt("PlayerWon", 1); // 로컬 플레이어가 승리한 경우
-            }
-            else if (winner == 0)
-            {
-                PlayerPrefs.SetInt("PlayerWon", -1); // 무승부
-            }
-            else
-            {
-                PlayerPrefs.SetInt("PlayerWon", 0); // 로컬 플레이어가 패배한 경우
-            }
-
-            PlayerPrefs.Save(); // 데이터를 즉시 저장
-        }
-
-
+        CheckWinCondition();
 
         // 컷씬이 끝난 후 방 나가기 및 다음 씬으로 이동
         PhotonNetwork.LeaveRoom();
     }
+
+    private void CheckWinCondition()
+    {
+        int localPlayerCard = (int)PhotonNetwork.LocalPlayer.CustomProperties["selectedCard"];
+        int opponentCard = (PhotonNetwork.LocalPlayer == PhotonNetwork.PlayerList[0]) ? player2Card : player1Card;
+        int winner;
+
+        if (winCondition == "High")
+        {
+            winner = (localPlayerCard > opponentCard) ? 1 : (localPlayerCard < opponentCard) ? 2 : 0;
+        }
+        else
+        {
+            winner = (localPlayerCard < opponentCard) ? 1 : (localPlayerCard > opponentCard) ? 2 : 0;
+        }
+
+        PlayerPrefs.SetInt("PlayerWon", winner == 1 ? 1 : winner == 0 ? -1 : 0);
+        PlayerPrefs.Save();
+    }
+
+    public override void OnPlayerPropertiesUpdate(Player targetPlayer, ExitGames.Client.Photon.Hashtable changedProps)
+    {
+        if (changedProps.ContainsKey("selectedCard"))
+        {
+            UpdatePlayerInfo();
+            CheckWinCondition();
+        }
+    }
+
 
     public override void OnLeftRoom()
     {
