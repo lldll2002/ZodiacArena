@@ -29,26 +29,17 @@ public class FightCutScene : MonoBehaviourPunCallbacks
     [SerializeField] AudioClip spwanEffectSound;
     [SerializeField] AudioClip fightEffectSound;
 
-<<<<<<< Updated upstream
+
     private string winCondition;
 
     private int localPlayerCard;
     private int opponentCard;
 
-    void Start()
-    {
-        // AudioSource 초기화 및 없으면 수동으로 추가
-        audioSource = GetComponent<AudioSource>();
-        if (audioSource == null)
-        {
-            Debug.LogError("AudioSource component is missing.");
-        }
-=======
 
     void Start()
     {
         AudioSource audioSource = GetComponent<AudioSource>();
->>>>>>> Stashed changes
+
 
         UpdatePlayerInfo();
 
@@ -87,11 +78,8 @@ public class FightCutScene : MonoBehaviourPunCallbacks
 
         // 1번 플레이어 이펙트 소환
         visualEffectInstance = Instantiate(visualEffectPrefab, player1SpawnPoint.position, Quaternion.identity);
-<<<<<<< Updated upstream
-        SpawnEffectSound();
-=======
         audioSource.PlayOneShot(spwanEffectSound);
->>>>>>> Stashed changes
+
         Destroy(visualEffectInstance, 1.0f); // 이펙트를 1초 후에 삭제
         yield return new WaitForSeconds(0.5f); // 약간의 지연 후 모델 소환
 
@@ -107,11 +95,8 @@ public class FightCutScene : MonoBehaviourPunCallbacks
 
         // 2번 플레이어 이펙트 소환
         visualEffectInstance = Instantiate(visualEffectPrefab, player2SpawnPoint.position, Quaternion.identity);
-<<<<<<< Updated upstream
-        SpawnEffectSound();
-=======
         audioSource.PlayOneShot(spwanEffectSound);
->>>>>>> Stashed changes
+
         Destroy(visualEffectInstance, 1.0f);
         yield return new WaitForSeconds(0.5f);
 
@@ -134,11 +119,9 @@ public class FightCutScene : MonoBehaviourPunCallbacks
         // 부딪힘 효과(shake)
         player1ZodiacInstance.transform.DOShakePosition(0.5f, 1, 10, 50, false, false);
         player2ZodiacInstance.transform.DOShakePosition(0.5f, 1, 10, 50, false, false);
-<<<<<<< Updated upstream
-        FightEffectSound();
-=======
+
         audioSource.PlayOneShot(fightEffectSound);
->>>>>>> Stashed changes
+
 
         GameObject collisionEffectInstance = Instantiate(collisionEffectPrefab, midpoint, Quaternion.identity);
         Destroy(collisionEffectInstance, 0.1f);
@@ -206,7 +189,7 @@ public class FightCutScene : MonoBehaviourPunCallbacks
         }
     }
 
-<<<<<<< Updated upstream
+
     private void SpawnEffectSound()
     {
         if (spwanEffectSound != null)
@@ -230,8 +213,6 @@ public class FightCutScene : MonoBehaviourPunCallbacks
             Debug.LogWarning("Fight effect sound clip is missing.");
         }
     }
-=======
 
 
->>>>>>> Stashed changes
 }
